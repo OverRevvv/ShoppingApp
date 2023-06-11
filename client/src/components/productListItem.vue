@@ -5,11 +5,11 @@
 </script>
 <template>
 <div class="product-container">
-    <img :src="product.imageUrl" alt="" class="product-image">
+    <img :src="`http://localhost:8000${product.imageUrl}`" alt="" class="product-image">
     <div class="detail-wrap">
         <h3>{{ product.name }}</h3>
         <p>${{ product.price }}</p>
-        <button class="remove-button">Remove from cart</button>
+        <button class="remove-button" @click="$emit('remove-from-cart',product.id)" >Remove from cart</button>
     </div>
 </div>
 </template>
@@ -21,7 +21,6 @@
     padding: 16px;
     width: 100%;
   }
-
   .product-image {
     flex: 1;
     height: 100px;
@@ -37,4 +36,5 @@
     flex: 1;
     margin: auto;
   }
+
 </style>
