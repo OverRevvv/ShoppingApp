@@ -11,6 +11,5 @@
       "src": "/(.*)",
       "dest": "/build/server.js"
     }
-  ],
-  "framework": "expressjs"
+  ]
 }
