@@ -11,9 +11,7 @@ const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'http://localhost:5173',
-}));
+app.use(cors({ origin: 'http://localhost:5173'}));
 app.use('/images', express.static(path.join(__dirname, '../assets')));
 app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag: false }));
 app.use(history());
