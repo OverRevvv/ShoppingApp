@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb';
 import path from 'path';
 import history from 'connect-history-api-fallback';
 
-const port = 8000;
+const port = process.env.PORT ||8000;
 const mongoAtlas = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.gaiffox.mongodb.net/?retryWrites=true&w=majority`;
 const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
