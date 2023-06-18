@@ -7,8 +7,7 @@
     "build":"babel ./src --out-dir ./build",
     "start": "node server.js",
     "dev": "npx nodemon --exec npx babel-node src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "vercel-build": "npm run build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "overrevvv",
   "license": "ISC",
