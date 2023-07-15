@@ -1,12 +1,13 @@
 <script setup>
-import { defineProps } from 'vue';
+const prodURL = `https://shoekart-31xv.onrender.com`;
+const baseUrlImg = process.env.NODE_ENV === 'production' ? prodURL : 'http://localhost:8000'
 defineProps({
     product: Object
 })
 </script>
 <template>
     <div class="product-item">
-        <img :src="`http://localhost:8000${product.imageUrl}`" />
+        <img :src="`${baseUrlImg}${product.imageUrl}`" />
         <h3 class="product-name">{{ product.name }}</h3>
         <p class="product-price">${{ product.price }}</p>
         <router-link v-bind:to="'/products/' + product.id">

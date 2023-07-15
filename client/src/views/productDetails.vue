@@ -4,6 +4,9 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import NotFound from './notFound.vue';
 
+const prodURL = `https://shoekart-31xv.onrender.com`;
+const baseUrl = process.env.NODE_ENV === 'production' ? prodURL : '/api'
+const baseUrlImg = process.env.NODE_ENV === 'production' ? prodURL : 'http://localhost:8000'
 const route = useRoute();
 const router = useRouter();
 const successMessage = ref(false);
@@ -12,16 +15,16 @@ const productID = route.params.id;
 // const product = ref(products.find((p) => p.id === productID));
 const product = ref([]);
 const getData = async () => {
-    const results = await axios.get(`http://localhost:8000/api/products/${productID}`);
+    const results = await axios.get(`${baseUrl}/products/${productID}`);
     product.value = results.data;
 
-     const cartResults = await axios.get("http://localhost:8000/api/users/1459/cart");
+     const cartResults = await axios.get(`${baseUrl}/users/1459/cart`);
      cartItems.value = cartResults.data;
 }
 getData();
 
 async function addToCart() {
-    await axios.post(`http://localhost:8000/api/users/1459/cart`, {
+    await axios.post(`${baseUrl}/users/1459/cart`, {
         productId: productID
     });
     successMessage.value = true;
@@ -36,7 +39,7 @@ const itemIsInCart = computed(()=>{
 <template>
     <div id="page-wrap" v-if="product">
         <div id="img-wrap">
-            <img v-bind:src="`http://localhost:8000${product.imageUrl}`" />
+            <img v-bind:src="`${baseUrlImg}${product.imageUrl}`" />
         </div>
         <div id="product-details">
             <h1>{{ product.name }}</h1>

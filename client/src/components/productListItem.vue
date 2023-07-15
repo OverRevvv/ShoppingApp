@@ -1,11 +1,13 @@
 <script setup>
+const prodURL = `https://shoekart-31xv.onrender.com`;
+const baseUrlImg = process.env.NODE_ENV === 'production' ? prodURL : 'http://localhost:8000'
  defineProps({
     product: Object
  })
 </script>
 <template>
 <div class="product-container">
-    <img :src="`http://localhost:8000${product.imageUrl}`" alt="" class="product-image">
+    <img :src="`${baseUrlImg}${product.imageUrl}`" alt="" class="product-image">
     <div class="detail-wrap">
         <h3>{{ product.name }}</h3>
         <p>${{ product.price }}</p>

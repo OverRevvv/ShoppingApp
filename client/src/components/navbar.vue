@@ -1,7 +1,7 @@
 <template>
     <div id="nav-bar">
         <router-link to="/products" id="products-link">
-            <h3>FABULOUS FOOTWEAR</h3>
+            <div class="logo"> <img src="/public/sneaker.png" alt=""> </div>
         </router-link>
         <router-link to="/cart" id="cart-link">
             <button>Shopping Cart</button>
@@ -15,7 +15,10 @@
     height: 75px;
     width: 100%;
 }
-
+.logo img{
+    width: 5rem;
+    transform: translate(2rem, -1rem);
+}
 #products-link {
     text-align: center;
     display: block;
