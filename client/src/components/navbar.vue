@@ -1,7 +1,7 @@
 <template>
     <div id="nav-bar">
         <router-link to="/products" id="products-link">
-            <div class="logo"> <img src="/public/sneaker.png" alt=""> </div>
+            <div class="logo"> <img src="/sneaker.png" alt=""> </div>
         </router-link>
         <router-link to="/cart" id="cart-link">
             <button>Shopping Cart</button>

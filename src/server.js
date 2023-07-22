@@ -15,12 +15,11 @@ const mongoAtlas = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_
 const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
 let client = null;
-let db = null;
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/images', express.static(path.join(__dirname, '../assets')));
-app.use(express.static(path.resolve(__dirname, '../client/dist'), { maxAge: '1y', etag: false }));
+app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag: false }));
 app.use(history());
 
 const connnectToDB = async () => {
@@ -39,13 +38,6 @@ const connnectToDB = async () => {
         throw error;
     }
 }
-
-async function database() {
-    client = await connnectToDB();
-    db = client.db(process.env.MONGO_DBNAME || 'shoeDb');
-    return db;
-}
-database();
 
 app.get('/api/products', async (req, res) => {
     const client = await connnectToDB();
@@ -109,8 +101,9 @@ app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
 })
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
 })
+
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
