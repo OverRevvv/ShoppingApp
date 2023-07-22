@@ -1,6 +1,6 @@
 <script setup>
-const prodURL = `https://shoekart-31xv.onrender.com`;
-const baseUrlImg = process.env.NODE_ENV === 'production' ? prodURL : 'http://localhost:8000'
+const baseUrl = '/api';
+const baseUrlImg = 'http://localhost:8000' || 'http://localhost:10000';
  defineProps({
     product: Object
  })

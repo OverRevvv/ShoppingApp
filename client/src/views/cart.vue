@@ -3,8 +3,7 @@ import { ref, computed } from 'vue';
 import axios from 'axios'
 import productList from '../components/productList.vue';
 
-const prodURL = `https://shoekart-31xv.onrender.com`;
-const baseUrl = process.env.NODE_ENV === 'production' ? prodURL : '/api'
+const baseUrl = '/api';
 const cartItems = ref([]);
 const getData = async () => {
     const results = await axios.get(`${baseUrl}/users/1459/cart`);
