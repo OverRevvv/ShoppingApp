@@ -1,13 +1,11 @@
 <script setup>
-const baseUrl = '/api';
-const baseUrlImg = 'http://localhost:8000' || 'http://localhost:10000';
 defineProps({
     product: Object
 })
 </script>
 <template>
     <div class="product-item">
-        <img :src="`${baseUrlImg}${product.imageUrl}`" />
+        <img :src="product.imageUrl" />
         <h3 class="product-name">{{ product.name }}</h3>
         <p class="product-price">${{ product.price }}</p>
         <router-link v-bind:to="'/products/' + product.id">

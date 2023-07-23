@@ -1,13 +1,11 @@
 <script setup>
-const baseUrl = '/api';
-const baseUrlImg = 'http://localhost:8000' || 'http://localhost:10000';
  defineProps({
     product: Object
  })
 </script>
 <template>
 <div class="product-container">
-    <img :src="`${baseUrlImg}${product.imageUrl}`" alt="" class="product-image">
+    <img :src="product.imageUrl" alt="" class="product-image">
     <div class="detail-wrap">
         <h3>{{ product.name }}</h3>
         <p>${{ product.price }}</p>
