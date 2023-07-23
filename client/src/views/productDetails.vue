@@ -5,7 +5,6 @@ import axios from 'axios'
 import NotFound from './notFound.vue';
 
 const baseUrl = '/api';
-const baseUrlImg = 'http://localhost:8000' || 'http://localhost:10000';
 const route = useRoute();
 const router = useRouter();
 const successMessage = ref(false);
@@ -38,7 +37,7 @@ const itemIsInCart = computed(() => {
 <template>
     <div id="page-wrap" v-if="product">
         <div id="img-wrap">
-            <img v-bind:src="`${baseUrlImg}${product.imageUrl}`" />
+            <img :src="product.imageUrl" />
         </div>
         <div id="product-details">
             <h1>{{ product.name }}</h1>
