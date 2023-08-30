@@ -104,3 +104,9 @@ export const cartItems = [
   products[2],
   products[3],
 ];
+/*
+todo: Auth login/signup with email confirmation
+todo: Search Pop up feature
+todo: Track packages and delivery mails 
+
+*/

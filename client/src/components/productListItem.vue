@@ -4,13 +4,13 @@ defineProps({
 })
 </script>
 <template>
-  <div class="product-container">
-    <img :src="product.imageUrl" alt="" class="product-image">
+  <div class="product-container blur">
+    <img :src="product.imageUrl" :alt="product.name" class="product-image">
     <div class="details-wrap">
       <h3>{{ product.name }}</h3>
       <p>${{ product.price }}</p>
-      <button class="remove-button" @click="$emit('remove-from-cart', product.id)">Remove from cart</button>
     </div>
+    <button class="remove-button" @click="$emit('remove-from-cart', product.id)">Remove from cart</button>
   </div>
 </template>
 <style scoped>
@@ -21,6 +21,9 @@ defineProps({
   padding: 16px;
   width: 100%;
 }
+img{
+  border-radius: 8px;
+}
 
 .product-image {
   flex: 1;
@@ -30,29 +33,23 @@ defineProps({
 
 .details-wrap {
   padding: 0 16px;
-  display: flex;
-  column-gap: 20%;
-  justify-content: center;
-  align-items: center;
   flex: 3;
 }
 
 .remove-button {
-  flex: 1;
+  flex: 3;
   margin: auto;
 }
 
-@media (min-width: 640px) {
+/* 
+@media (max-width: 640px) {
   .details-wrap {
-    column-gap: 0%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
+    flex: 3;
   }
 
   .remove-button {
-    /* flex: 1; */
+    flex: 1;
     margin: auto;
   }
-}
+} */
 </style>

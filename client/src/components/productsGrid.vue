@@ -19,5 +19,6 @@ import { defineProps } from 'vue';
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 16px;
+    overflow-x: hidden;
 }
 </style>

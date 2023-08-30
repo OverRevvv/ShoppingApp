@@ -7,6 +7,7 @@
   color: rgba(255, 255, 255, 0.87);
   /* background-color: #242424; */
   background-color: #181a1b;
+  /* background-color: #222222; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,11 +17,21 @@
 }
 
 ::-webkit-scrollbar {
-  background-color: #202324;
+  /* background-color: #202324; */
+  /* background: transparent; */
+  background-color: #da5325;
+  width: 0.5rem;
+  /* background-color: #000000; */
 }
 
+/* ::-webkit-scrollbar-track {
+  background: transparent;
+} */
+
 ::-webkit-scrollbar-thumb {
-  background: #575e62;
+  /* background: #575e62; */
+  background-color: #181a1b;
+  /* background-color: #da5325; */
 }
 
 a {
@@ -28,6 +39,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -37,6 +49,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -48,6 +61,57 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* background: url('https://images.unsplash.com/photo-1518002171953-a080ee817e1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')  no-repeat center center/cover; */
+  /* background: url('https://images.unsplash.com/photo-1612034398734-d4ae0bc9169c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80')  no-repeat center center/cover; */
+}
+
+html {
+  overflow-x: hidden;
+}
+
+html::before {
+  /* content: ""; */
+  /* content: url(https://images.unsplash.com/photo-1505233676147-accd9c73eb1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1524&q=80); */
+  /*? http://localhost:5173/products */
+  /* content: url(https://images.unsplash.com/photo-1539185441755-769473a23570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80); */
+  /*? https://unsplash.com/photos/JM-qKEd1GMI */
+  /* content: url(https://images.unsplash.com/flagged/photo-1556637640-2c80d3201be8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80); */
+  /*? https://unsplash.com/photos/ezdrvzA1hZw */
+  /* content: url(https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1412&q=80); */
+  /*? https://unsplash.com/photos/w83s82yd3Fk */
+  /* content: url(https://images.unsplash.com/photo-1533681018184-68bd1d883b97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1631&q=80); */
+  /*? https://unsplash.com/photos/JzJSybPFb3s */
+  /* content: url(https://images.unsplash.com/photo-1465877783223-4eba513e27c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80); */
+  /* ?  https://unsplash.com/photos/Q3z5_vh0NTw */
+  /* content: url(https://images.unsplash.com/photo-1609011809547-fec587101c8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80); */
+  /*? https://unsplash.com/photos/4JHMt29fvj8 */
+  /* content: url(https://images.unsplash.com/photo-1520256862855-398228c41684?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80); */
+  content: "";
+  background: url(https://images.unsplash.com/photo-1609011809547-fec587101c8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80);
+  background-position: center;
+  background-color: #da5325 ;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  z-index: -10;
+}
+
+.blur {
+  background: transparent;
+  backdrop-filter: saturate(100%) blur(10px);
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 black;
+}
+.blur-prod{
+  background: #00000056;
+  backdrop-filter: saturate(100%) blur(10px);
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 black;
 }
 
 h1 {
@@ -66,9 +130,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -79,7 +145,7 @@ button:focus-visible {
 }
 
 #app {
-  width: 100vw;
+  width: 100%;
   overflow-x: hidden;
   max-width: 1280px;
   margin: 0 auto;
@@ -87,14 +153,17 @@ button:focus-visible {
   text-align: center;
 }
 
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }

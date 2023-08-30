@@ -1,6 +1,7 @@
 <template>
     <footer>
-        <span>Developed By <a href="https://github.com/OverRevvv">OverRevvv</a> | <span class="far fa-copyright"></span> 2023
+        <span>Developed By <a href="https://github.com/OverRevvv">OverRevvv</a> | <span class="far fa-copyright"></span>
+            2023
             All rights reserved.</span>
     </footer>
 </template>
@@ -9,13 +10,15 @@
 footer {
     color: #ddd;
     text-align: center;
-    position: relative;
-    bottom: 0;
+    position: absolute;
     padding: 5px 10px;
-    width: 100vw;
-    background-color:#141616 ;
+    left: 0;
+    right: 0;
+    width: 100%;
     font-family: inherit, monospace;
     user-select: none;
+    background: #00000094;
+    backdrop-filter: saturate(100%) blur(80px);
 }
 
 footer span a {
