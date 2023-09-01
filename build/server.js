@@ -62,9 +62,9 @@ var connnectToDB = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-app.get('/api/products', /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var client, db, products;
+var database = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
+    var client;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -72,132 +72,69 @@ app.get('/api/products', /*#__PURE__*/function () {
           return connnectToDB();
         case 2:
           client = _context2.sent;
-          db = client.db(process.env.MONGO_DBNAME || 'shoeDb');
-          _context2.next = 6;
-          return db.collection('products').find({}).toArray();
-        case 6:
-          products = _context2.sent;
-          res.status(200).json(products);
-        case 8:
+          return _context2.abrupt("return", client.db(process.env.MONGO_DBNAME || 'shoeDb'));
+        case 4:
         case "end":
           return _context2.stop();
       }
     }, _callee2);
   }));
-  return function (_x, _x2) {
+  return function database() {
     return _ref2.apply(this, arguments);
   };
-}());
-app.get('/api/users/:userId/cart', /*#__PURE__*/function () {
+}();
+app.get('/api/products', /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
-    var userId, client, db, user, products, cartItemIds, cartItems;
+    var db, products;
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          userId = req.params.userId;
-          _context3.next = 3;
-          return connnectToDB();
-        case 3:
-          client = _context3.sent;
-          db = client.db(process.env.MONGO_DBNAME || 'shoeDb');
-          _context3.next = 7;
-          return db.collection('users').findOne({
-            id: userId
-          });
-        case 7:
-          user = _context3.sent;
-          if (user) {
-            _context3.next = 10;
-            break;
-          }
-          return _context3.abrupt("return", res.status(404).json("Could not find user!"));
-        case 10:
-          _context3.next = 12;
+          _context3.next = 2;
+          return database();
+        case 2:
+          db = _context3.sent;
+          _context3.next = 5;
           return db.collection('products').find({}).toArray();
-        case 12:
+        case 5:
           products = _context3.sent;
-          cartItemIds = user.cartItems;
-          cartItems = cartItemIds.map(function (id) {
-            return products.find(function (product) {
-              return product.id === id;
-            });
-          });
-          res.status(200).json(cartItems);
-        case 16:
+          res.status(200).json(products);
+        case 7:
         case "end":
           return _context3.stop();
       }
     }, _callee3);
   }));
-  return function (_x3, _x4) {
+  return function (_x, _x2) {
     return _ref3.apply(this, arguments);
   };
 }());
-app.get('/api/products/:productId', /*#__PURE__*/function () {
+app.get('/api/users/:userId/cart', /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var productId, client, db, product;
+    var userId, db, user, products, cartItemIds, cartItems;
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          productId = req.params.productId;
-          _context4.next = 3;
-          return connnectToDB();
-        case 3:
-          client = _context4.sent;
-          db = client.db(process.env.MONGO_DBNAME || 'shoeDb');
-          _context4.next = 7;
-          return db.collection('products').findOne({
-            id: productId
-          });
-        case 7:
-          product = _context4.sent;
-          if (product) {
-            res.status(200).json(product);
-          } else {
-            res.status(404).json('Could not find the product!');
-          }
-        case 9:
-        case "end":
-          return _context4.stop();
-      }
-    }, _callee4);
-  }));
-  return function (_x5, _x6) {
-    return _ref4.apply(this, arguments);
-  };
-}());
-app.post('/api/users/:userId/cart', /*#__PURE__*/function () {
-  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
-    var userId, productId, client, db, user, products, cartItemIds, cartItems;
-    return _regenerator["default"].wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
-        case 0:
           userId = req.params.userId;
-          productId = req.body.productId;
-          _context5.next = 4;
-          return connnectToDB();
-        case 4:
-          client = _context5.sent;
-          db = client.db(process.env.MONGO_DBNAME || 'shoeDb');
-          _context5.next = 8;
-          return db.collection('users').updateOne({
-            id: userId
-          }, {
-            $addToSet: {
-              cartItems: productId
-            }
-          });
-        case 8:
-          _context5.next = 10;
+          _context4.next = 3;
+          return database();
+        case 3:
+          db = _context4.sent;
+          _context4.next = 6;
           return db.collection('users').findOne({
             id: userId
           });
-        case 10:
-          user = _context5.sent;
-          _context5.next = 13;
+        case 6:
+          user = _context4.sent;
+          if (user) {
+            _context4.next = 9;
+            break;
+          }
+          return _context4.abrupt("return", res.status(404).json("Could not find user!"));
+        case 9:
+          _context4.next = 11;
           return db.collection('products').find({}).toArray();
-        case 13:
-          products = _context5.sent;
+        case 11:
+          products = _context4.sent;
           cartItemIds = user.cartItems;
           cartItems = cartItemIds.map(function (id) {
             return products.find(function (product) {
@@ -205,33 +142,65 @@ app.post('/api/users/:userId/cart', /*#__PURE__*/function () {
             });
           });
           res.status(200).json(cartItems);
-        case 17:
+        case 15:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4);
+  }));
+  return function (_x3, _x4) {
+    return _ref4.apply(this, arguments);
+  };
+}());
+app.get('/api/products/:productId', /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
+    var productId, db, product;
+    return _regenerator["default"].wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          productId = req.params.productId;
+          _context5.next = 3;
+          return database();
+        case 3:
+          db = _context5.sent;
+          _context5.next = 6;
+          return db.collection('products').findOne({
+            id: productId
+          });
+        case 6:
+          product = _context5.sent;
+          if (product) {
+            res.status(200).json(product);
+          } else {
+            res.status(404).json('Could not find the product!');
+          }
+        case 8:
         case "end":
           return _context5.stop();
       }
     }, _callee5);
   }));
-  return function (_x7, _x8) {
+  return function (_x5, _x6) {
     return _ref5.apply(this, arguments);
   };
 }());
-app["delete"]('/api/users/:userId/cart/:productId', /*#__PURE__*/function () {
+app.post('/api/users/:userId/cart', /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
-    var _req$params, userId, productId, client, db, user, products, cartItemIds, cartItems;
+    var userId, productId, db, user, products, cartItemIds, cartItems;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          _req$params = req.params, userId = _req$params.userId, productId = _req$params.productId;
-          _context6.next = 3;
-          return connnectToDB();
-        case 3:
-          client = _context6.sent;
-          db = client.db(process.env.MONGO_DBNAME || 'shoeDb');
+          userId = req.params.userId;
+          productId = req.body.productId;
+          _context6.next = 4;
+          return database();
+        case 4:
+          db = _context6.sent;
           _context6.next = 7;
           return db.collection('users').updateOne({
             id: userId
           }, {
-            $pull: {
+            $addToSet: {
               cartItems: productId
             }
           });
@@ -259,8 +228,55 @@ app["delete"]('/api/users/:userId/cart/:productId', /*#__PURE__*/function () {
       }
     }, _callee6);
   }));
-  return function (_x9, _x10) {
+  return function (_x7, _x8) {
     return _ref6.apply(this, arguments);
+  };
+}());
+app["delete"]('/api/users/:userId/cart/:productId', /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
+    var _req$params, userId, productId, db, user, products, cartItemIds, cartItems;
+    return _regenerator["default"].wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
+        case 0:
+          _req$params = req.params, userId = _req$params.userId, productId = _req$params.productId;
+          _context7.next = 3;
+          return database();
+        case 3:
+          db = _context7.sent;
+          _context7.next = 6;
+          return db.collection('users').updateOne({
+            id: userId
+          }, {
+            $pull: {
+              cartItems: productId
+            }
+          });
+        case 6:
+          _context7.next = 8;
+          return db.collection('users').findOne({
+            id: userId
+          });
+        case 8:
+          user = _context7.sent;
+          _context7.next = 11;
+          return db.collection('products').find({}).toArray();
+        case 11:
+          products = _context7.sent;
+          cartItemIds = user.cartItems;
+          cartItems = cartItemIds.map(function (id) {
+            return products.find(function (product) {
+              return product.id === id;
+            });
+          });
+          res.status(200).json(cartItems);
+        case 15:
+        case "end":
+          return _context7.stop();
+      }
+    }, _callee7);
+  }));
+  return function (_x9, _x10) {
+    return _ref7.apply(this, arguments);
   };
 }());
 app.get('*', function (req, res) {
