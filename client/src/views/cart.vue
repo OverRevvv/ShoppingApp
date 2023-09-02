@@ -22,5 +22,15 @@ async function removeFromCart(productId) {
 
 </script>
 <template>
+    <div id="page-wrap">
+    <h1>Shopping Cart</h1>
     <productList @remove-from-cart="removeFromCart($event)" :total-price="totalPrice" :products="cartItems" />
+    </div>
 </template>
+<style scoped>
+#page-wrap {
+    margin-top: 16px;
+    padding: 16px;
+    max-width: 600px;
+}
+</style>

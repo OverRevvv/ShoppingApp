@@ -6,8 +6,7 @@ defineProps({
 })
 </script>
 <template>
-    <div id="page-wrap" v-if="products.length > 0">
-        <h1>Shopping Cart</h1>
+    <div v-if="products.length > 0">
         <productListItem @remove-from-cart="$emit('remove-from-cart', $event)" v-for="product in products" :key="product.id"
             :product="product" />
         <h3 class="total-price">Total: ${{ totalPrice }}</h3>
