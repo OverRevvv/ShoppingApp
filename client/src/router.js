@@ -4,12 +4,16 @@ import productPage from './views/products.vue'
 // import cartPage from './views/cart.vue'
 // import notFound from './views/notFound.vue'
 
+const productDetail = () => import('./views/productDetails.vue');
+const cartPage = () => import('./views/cart.vue');
+const notFound = () => import('./views/notFound.vue');
+
 const routes = [
   { path: '/', redirect: '/products' },
   { path: '/products', name: "products", component: productPage, },
-  { path: '/products/:id', name: "productDetails", component: ()=> import('./views/productDetails.vue') },
-  { path: '/cart', name: "cart", component:()=> import('./views/cart.vue') },
-  { path: '/:pathMatch(.*)', name: "notFound", component:()=> import('./views/notFound.vue') },
+  { path: '/products/:id', name: "productDetails", component: productDetail },
+  { path: '/cart', name: "cart", component: cartPage },
+  { path: '/:pathMatch(.*)', name: "notFound", component: notFound },
 ];
 
 const router = createRouter({
