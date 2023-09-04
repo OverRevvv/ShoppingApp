@@ -1,12 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import productPage from './views/products.vue';
-// import productDetail from './views/productDetails.vue';
-// import cartPage from './views/cart.vue';
-// import notFound from './views/notFound.vue';
-
-const productDetail = () => import('./views/productDetails.vue');
-const cartPage = () => import('./views/cart.vue');
-const notFound = () => import('./views/notFound.vue');
+import productDetail from './views/productDetails.vue';
+import cartPage from './views/cart.vue';
+import notFound from './views/notFound.vue';
 
 const routes = [
   { path: '/', redirect: '/products' },
