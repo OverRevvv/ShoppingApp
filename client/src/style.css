@@ -7,6 +7,7 @@
   color: rgba(255, 255, 255, 0.87);
   /* background-color: #242424; */
   background-color: #181a1b;
+  /* background-color: #222222; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -48,6 +49,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* background: url('https://images.unsplash.com/photo-1518002171953-a080ee817e1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')  no-repeat center center/cover; */
+  /* background: url('https://images.unsplash.com/photo-1612034398734-d4ae0bc9169c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80')  no-repeat center center/cover; */
 }
 
 h1 {

@@ -5,7 +5,7 @@ defineProps({
 </script>
 <template>
     <div class="product-item">
-        <img :src="product.imageUrl" />
+        <img loading="lazy" :src="product.imageUrl" />
         <h3 class="product-name">{{ product.name }}</h3>
         <p class="product-price">${{ product.price }}</p>
         <router-link v-bind:to="'/products/' + product.id">
@@ -34,6 +34,7 @@ defineProps({
 img {
     height: 200px;
     width: 200px;
+    border-radius: 8px;
 }
 
 a {

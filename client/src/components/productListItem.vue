@@ -21,6 +21,9 @@ defineProps({
   padding: 16px;
   width: 100%;
 }
+img{
+  border-radius: 8px;
+}
 
 .product-image {
   flex: 1;

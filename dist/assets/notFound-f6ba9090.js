@@ -1,1 +1,0 @@
-import{_ as e,o,b as _}from"./index-ae127e78.js";const n={};function t(c,a){return o(),_("h1",null,"404: Page Not Found")}const d=e(n,[["render",t],["__scopeId","data-v-8de75ea1"]]);export{d as default};

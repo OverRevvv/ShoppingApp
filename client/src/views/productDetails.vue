@@ -36,7 +36,7 @@ const itemIsInCart = computed(() => {
 </script>
 <template>
     <div id="page-wrap" v-if="product">
-        <div id="img-wrap">
+        <div class="img-wrap">
             <img :src="product.imageUrl" />
         </div>
         <div id="product-details">
@@ -60,12 +60,13 @@ const itemIsInCart = computed(() => {
     max-width: 600px;
 }
 
-#img-wrap {
+.img-wrap {
     text-align: center;
 }
 
 img {
     width: 400px;
+    border-radius: 16px;
 }
 
 #product-details {
