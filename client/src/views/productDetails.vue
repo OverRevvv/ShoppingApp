@@ -8,6 +8,7 @@ const baseUrl = '/api';
 const route = useRoute();
 const router = useRouter();
 const successMessage = ref(false);
+const inProgress = ref(true)
 const cartItems = ref([]);
 const productID = route.params.id;
 // const product = ref(products.find((p) => p.id === productID));
@@ -15,7 +16,9 @@ const product = ref([]);
 const getData = async () => {
     const results = await axios.get(`${baseUrl}/products/${productID}`);
     product.value = results.data;
-
+    setTimeout(() => {
+        inProgress.value = false;
+    }, 500);
     const cartResults = await axios.get(`${baseUrl}/users/1459/cart`);
     cartItems.value = cartResults.data;
 }
@@ -35,13 +38,25 @@ const itemIsInCart = computed(() => {
 })
 </script>
 <template>
+    <div id="page-wrap" v-if="inProgress">
+        <div class="skeleton-image" />
+        <div id="product-details">
+            <div class="skeleton-name" />
+            <div class="skeleton-price" />
+            <div class="skeleton-rating" />
+            <div class="skeleton-button" />
+            <div class="skeleton-desc" />
+            <div v-for="n in 10" :key="n" class="skeleton-para" />
+            <div class="skeleton-para-small" />
+        </div>
+    </div>
     <div id="page-wrap" v-if="product">
         <div class="img-wrap">
             <img :src="product.imageUrl" />
         </div>
         <div id="product-details">
             <h1>{{ product.name }}</h1>
-            <h3 id="price">{{ product.price }}</h3>
+            <h3 id="price">${{ product.price }}</h3>
             <p> Average Rating: {{ product.averageRating }}</p>
             <button v-if="!successMessage && !itemIsInCart" id="add-to-cart" @click="addToCart">Add to Cart</button>
             <button v-if="successMessage && !itemIsInCart" class="green-button" id="add-to-cart">Successfully Added item to
@@ -79,7 +94,7 @@ img {
 }
 
 #price {
-    position: absolute;
+    /* position: absolute; */
     top: 24px;
     right: 16px;
 }
@@ -91,4 +106,69 @@ img {
 .grey-button {
     background-color: #888;
 }
-</style>
+
+.skeleton-name {
+    background-color: #646363;
+    height: 2.8rem;
+    width: 80%;
+    border-radius: 8px;
+    margin: 9% auto;
+}
+
+.skeleton-price {
+    background-color: #646363;
+    height: 2rem;
+    width: 20%;
+    border-radius: 8px;
+    margin: 5% auto;
+}
+
+.skeleton-rating {
+    background-color: #646363;
+    height: 1.6rem;
+    width: 60%;
+    border-radius: 4px;
+    margin: 6% auto;
+}
+
+.skeleton-image {
+    height: 400px;
+    width: 400px;
+    background-color: #646363;
+    border-radius: 8px;
+    margin: 0 auto;
+}
+
+.skeleton-button {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    background-color: #000000;
+    margin: 0 auto;
+}
+
+.skeleton-desc {
+    background-color: #646363;
+    height: 1rem;
+    width: 30%;
+    border-radius: 4px;
+    margin: 6% auto;
+}
+
+.skeleton-para {
+    background-color: #646363;
+    height: .7rem;
+    width: 100%;
+    border-radius: 4px;
+    margin: 7.5px auto;
+}
+
+.skeleton-para-small {
+    background-color: #646363;
+    height: .7rem;
+    width: 50%;
+    border-radius: 4px;
+    margin: 7.5px auto;
+}</style>

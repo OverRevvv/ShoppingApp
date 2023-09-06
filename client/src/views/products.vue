@@ -6,16 +6,20 @@ const products = ref([]);
 import productsGrid from '../components/productsGrid.vue';
 
 
+const inProgress = ref(true)
 const baseUrl = '/api'
 const getData = async () => {
     const results = await axios.get(`${baseUrl}/products`);
     products.value = results.data;
+    setTimeout(() => {
+        inProgress.value = false;
+    }, 500);
 }
 getData();
 </script>
 <template>
     <div id="page-wrap">
-        <div v-if="products.length == 0">
+        <div v-if="inProgress">
             <div class="skeleton-wrap">
                 <div v-for="n  in 6" :key="n" class="skeleton-item">
                     <div class="skeleton-image" />
