@@ -21,7 +21,7 @@ getData();
     <div id="page-wrap">
         <div v-if="inProgress">
             <div class="skeleton-wrap">
-                <div v-for="n  in 6" :key="n" class="skeleton-item">
+                <div v-for="n  in 6" :key="n" class="skeleton-item blur loading">
                     <div class="skeleton-image" />
                     <h3 class="skeleton-name"/>
                     <p class="skeleton-price"/>
