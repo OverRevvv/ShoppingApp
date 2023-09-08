@@ -1,5 +1,5 @@
 <template>
-    <div id="nav-bar">
+    <div class="nav-bar blurNav">
         <router-link to="/products" id="products-link">
             <div class="logo"> <img src="/sneaker.png" alt=""> </div>
         </router-link>
@@ -10,7 +10,7 @@
 </template>
 
 <style scoped>
-#nav-bar {
+.nav-bar {
     border-bottom: 1px solid #ddd;
     height: 75px;
     width: 100%;
@@ -38,6 +38,16 @@
     position: absolute;
     right: 16px;
     top: 16px;
+}
+.blurNav {
+  /* background: transparent; */
+  background: #00000027;
+  backdrop-filter: saturate(100%) blur(40px);
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 black;
+  /* border-radius: 30rem; */
 }
 </style>
 

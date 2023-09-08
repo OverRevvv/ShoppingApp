@@ -4,7 +4,7 @@ defineProps({
 })
 </script>
 <template>
-  <div class="product-container">
+  <div class="product-container blur">
     <img :src="product.imageUrl" alt="" class="product-image">
     <div class="details-wrap">
       <h3>{{ product.name }}</h3>
