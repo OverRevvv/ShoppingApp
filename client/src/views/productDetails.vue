@@ -38,7 +38,7 @@ const itemIsInCart = computed(() => {
 })
 </script>
 <template>
-    <div id="page-wrap" v-if="inProgress">
+    <div id="page-wrap" v-show="inProgress">
         <div class="skeleton-image" />
         <div id="product-details">
             <div class="skeleton-name" />
@@ -55,15 +55,16 @@ const itemIsInCart = computed(() => {
             <img :src="product.imageUrl" />
         </div>
         <div id="product-details">
-            <h1>{{ product.name }}</h1>
-            <h3 id="price">${{ product.price }}</h3>
-            <p> Average Rating: {{ product.averageRating }}</p>
+            <h1 class="blur">{{ product.name }}</h1>
+            <h3 id="price" class="blur">${{ product.price }}</h3>
+            <p class="blur"> Average Rating: {{ product.averageRating }}</p>
             <button v-if="!successMessage && !itemIsInCart" id="add-to-cart" @click="addToCart">Add to Cart</button>
-            <button v-if="successMessage && !itemIsInCart" class="green-button" id="add-to-cart">Successfully Added item to
+            <button v-if="successMessage && !itemIsInCart" class="green-button" id="add-to-cart">Successfully Added item
+                to
                 the cart!</button>
             <button v-if="itemIsInCart" class="grey-button" id="add-to-cart">Item is already added</button>
-            <h4>Description</h4>
-            <p>{{ product.description }}</p>
+            <h4 class="blur">Description</h4>
+            <p class="blur">{{ product.description }}</p>
         </div>
     </div>
     <NotFound v-else />
@@ -73,6 +74,14 @@ const itemIsInCart = computed(() => {
     margin-top: 16px;
     padding: 16px;
     max-width: 600px;
+    position: relative;
+}
+
+.skeleton-wrap {
+    margin-top: 16px;
+    padding: 16px;
+    max-width: 600px;
+    position: absolute;
 }
 
 .img-wrap {
@@ -171,4 +180,5 @@ img {
     width: 50%;
     border-radius: 4px;
     margin: 7.5px auto;
-}</style>
+}
+</style>

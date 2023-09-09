@@ -25,6 +25,7 @@ defineProps({
     padding: 20px;
     position: relative;
     width: 32%;
+    /* background-color: black; */
 }
 
 .product-name {

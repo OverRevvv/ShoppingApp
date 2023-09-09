@@ -12,5 +12,6 @@ Todo: Update skeleton with transition
 Todo: Update skeleton positions with absolute and relative
 Todo: Add page transtion 
 Todo: Make UI slightly more better
+Todo: Optimize whole UI for Mobile and Tablet Devices.
 
 */

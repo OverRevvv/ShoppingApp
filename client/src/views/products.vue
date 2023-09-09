@@ -19,32 +19,32 @@ getData();
 </script>
 <template>
     <div id="page-wrap" class="rel">
-        <div v-show="inProgress">
-        <!-- <div> -->
-            <div class="skeleton-wrap">
-                <div v-for="n  in 6" :key="n" class="skeleton-item blur loading">
+        <div class="skeleton-wrap" v-show="inProgress">
+                <div v-for="n  in 6" :key="n" class="skeleton-item blur">
                     <div class="skeleton-image" />
                     <h3 class="skeleton-name" />
                     <p class="skeleton-price" />
                     <div class="skeleton-button" />
                 </div>
-            </div>
         </div>
-        <productsGrid class="rel" :products="products" />
+        <productsGrid :products="products" />
     </div>
 </template>
 <style scoped>
 .skeleton-wrap {
     display: flex;
     flex-wrap: wrap;
-    box-shadow: 0px 2px 5px #888;
     justify-content: space-between;
-    position: absolute;
+    margin-top: 20px;
     z-index: 10;
+    position: absolute;
+    transition: opacity .5s ease-in-out;
+    overflow-x: hidden;
 }
 
 .rel {
     position: relative;
+    overflow-x: hidden;
 }
 
 .skeleton-item {
@@ -59,18 +59,17 @@ getData();
     padding: 20px;
     position: relative;
     width: 32%;
-    transition: opacity ease-in-out;
 }
 
 .skeleton-image {
-    background-color: #646363;
+    background-color: #646363d8;
     height: 200px;
     width: 200px;
     border-radius: 8px;
 }
 
 .skeleton-name {
-    background-color: #646363;
+    background-color: #64636367;
     height: 10%;
     width: 60%;
     margin-bottom: 0;
@@ -78,18 +77,18 @@ getData();
 }
 
 .skeleton-price {
-    background-color: #646363;
+    background-color: #64636367;
     height: 10%;
     width: 30%;
     border-radius: 8px;
 }
 
 .skeleton-button {
-    /* width: 216px; */
     width: 100%;
     height: 50px;
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
     background-color: #111111a4;
-}</style>
+}
+</style>

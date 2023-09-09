@@ -19,6 +19,7 @@ import Footer from './components/footer.vue';
   margin: auto;
   /* max-width: 800px; */
   min-height: 100vh;
+  overflow: hidden;
 }
 
 button {
