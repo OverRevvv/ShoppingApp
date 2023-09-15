@@ -20,6 +20,7 @@
   /* background-color: #202324; */
   /* background: transparent; */
   background-color: #da5325;
+  width: 0.5rem;
   /* background-color: #000000; */
 }
 
@@ -30,6 +31,7 @@
 ::-webkit-scrollbar-thumb {
   /* background: #575e62; */
   background-color: #181a1b;
+  /* background-color: #da5325; */
 }
 
 a {
@@ -103,6 +105,14 @@ html::before {
   text-overflow: ellipsis;
   text-shadow: 1px 1px 0 black;
 }
+.blur-prod{
+  background: #00000056;
+  backdrop-filter: saturate(100%) blur(10px);
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 black;
+}
 
 h1 {
   font-size: 3.2em;
@@ -135,7 +145,7 @@ button:focus-visible {
 }
 
 #app {
-  width: 100vw;
+  width: 100%;
   overflow-x: hidden;
   max-width: 1280px;
   margin: 0 auto;

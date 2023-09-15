@@ -7,6 +7,7 @@
             <button>Shopping Cart</button>
         </router-link>
     </div>
+    <div class="dummy-nav"/>
 </template>
 
 <style scoped>
@@ -14,6 +15,16 @@
     border-bottom: 1px solid #ddd;
     height: 75px;
     width: 100%;
+    position: fixed;
+    margin: 0 auto;
+    inset: 0 0 0 0;
+    z-index: 20;
+}
+.dummy-nav{
+    height: 75px;
+    width: 100%;
+    margin: 0 auto;
+    inset: 0 0 0 0;
 }
 .logo img{
     width: 5rem;
@@ -40,13 +51,12 @@
     top: 16px;
 }
 .blurNav {
-  /* background: transparent; */
-  background: #00000027;
-  backdrop-filter: saturate(100%) blur(40px);
+  background: #0000005e;
+  backdrop-filter: saturate(100%) blur(80px);
   white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 1px 1px 0 black;
+  /* text-shadow: 1px 1px 0 black; */
   /* border-radius: 30rem; */
 }
 </style>

@@ -20,12 +20,12 @@ getData();
 <template>
     <div id="page-wrap" class="rel">
         <div class="skeleton-wrap" v-show="inProgress">
-                <div v-for="n  in 6" :key="n" class="skeleton-item blur">
-                    <div class="skeleton-image" />
-                    <h3 class="skeleton-name" />
-                    <p class="skeleton-price" />
-                    <div class="skeleton-button" />
-                </div>
+            <div v-for="n  in 6" :key="n" class="skeleton-item blur-prod">
+                <div class="skeleton-image" />
+                <h3 class="skeleton-name" />
+                <p class="skeleton-price" />
+                <div class="skeleton-button" />
+            </div>
         </div>
         <productsGrid :products="products" />
     </div>
