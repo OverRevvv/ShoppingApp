@@ -28,6 +28,7 @@ async function removeFromCart(productId) {
 <template>
     <div id="page-wrap">
         <h1 class="blur">Shopping Cart</h1>
+        <div class="holder">
         <div v-for="n in 3" :key="n" v-if="inProgress" class="skeleton-wrap blur">
             <div class="skeleton-image"></div>
             <div class="skeleton-details-wrap">
@@ -35,6 +36,7 @@ async function removeFromCart(productId) {
                 <div class="skeleton-price" />
             </div>
             <div class="skeleton-button" />
+        </div>
         </div>
         <productList @remove-from-cart="removeFromCart($event)" :total-price="totalPrice" :products="cartItems" />
     </div>
@@ -44,7 +46,11 @@ async function removeFromCart(productId) {
     margin-top: 16px;
     padding: 16px;
     max-width: 600px;
-    /* position: relative; */
+}
+.holder{
+    position: absolute;
+    z-index: 10;
+    width: 42%;
 }
 
 .skeleton-wrap {
@@ -53,8 +59,7 @@ async function removeFromCart(productId) {
     display: flex;
     padding: 16px;
     width: 100%;
-    z-index: 10;
-    /* position: absolute; */
+
 }
 
 .skeleton-image {
