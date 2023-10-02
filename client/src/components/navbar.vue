@@ -4,10 +4,15 @@
             <div class="logo"> <img src="/sneaker.png" alt=""> </div>
         </router-link>
         <router-link to="/cart" id="cart-link">
-            <button>Shopping Cart</button>
+            <div class="wrapper">
+                <i class="fa">&#xf07a;</i>
+            </div>
+        </router-link>
+        <router-link to="/auth" class="auth">
+            <button>Auth</button>
         </router-link>
     </div>
-    <div class="dummy-nav"/>
+    <div class="dummy-nav" />
 </template>
 
 <style scoped>
@@ -20,16 +25,27 @@
     inset: 0 0 0 0;
     z-index: 20;
 }
-.dummy-nav{
+.wrapper{
+    margin: auto auto;
+    margin-right: 50px;
+}
+i {
+    font-size: 60px;
+    color: black;
+}
+
+.dummy-nav {
     height: 75px;
     width: 100%;
     margin: 0 auto;
     inset: 0 0 0 0;
 }
-.logo img{
+
+.logo img {
     width: 5rem;
     transform: translate(2rem, -1rem);
 }
+
 #products-link {
     text-align: center;
     display: block;
@@ -50,14 +66,15 @@
     right: 16px;
     top: 16px;
 }
+
 .blurNav {
-  background: #0000005e;
-  backdrop-filter: saturate(100%) blur(80px);
-  white-space: wrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* text-shadow: 1px 1px 0 black; */
-  /* border-radius: 30rem; */
+    background: #0000005e;
+    backdrop-filter: saturate(100%) blur(80px);
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* text-shadow: 1px 1px 0 black; */
+    /* border-radius: 30rem; */
 }
 </style>
 

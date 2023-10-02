@@ -32,12 +32,12 @@
 </template>
 
 <script setup>
-import { useState } from 'vue';
+// import { useState } from 'vue';
 
-const loginEmail = useState('');
-const loginPassword = useState('');
-const signupEmail = useState('');
-const signupPassword = useState('');
+// const loginEmail = useState('');
+// const loginPassword = useState('');
+// const signupEmail = useState('');
+// const signupPassword = useState('');
 
 const login = async () => {
   // TODO: Implement login logic
