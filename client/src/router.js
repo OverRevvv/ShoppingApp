@@ -10,7 +10,7 @@ const routes = [
   { path: '/products', name: "products", component: productPage},
   { path: '/products/:id', name: "productDetails", component: productDetail },
   { path: '/cart', name: "cart", component: cartPage },
-  { path: '/auth', name: "cart", component: auth },
+  { path: '/auth', name: "auth", component: auth },
   { path: '/:pathMatch(.*)', name: "notFound", component: notFound },
 ];
 
