@@ -8,8 +8,8 @@
                 <i class="fa">&#xf07a;</i>
             </div>
         </router-link>
-        <router-link to="/auth" class="auth">
-            <button>Auth</button>
+        <router-link to="/auth" id="login-link" class="auth">
+            <button>Login</button>
         </router-link>
     </div>
     <div class="dummy-nav" />
@@ -62,6 +62,11 @@ i {
 }
 
 #cart-link {
+    position: absolute;
+    right: 3.5rem;
+    top: .6rem;
+}
+#login-link {
     position: absolute;
     right: 16px;
     top: 16px;
