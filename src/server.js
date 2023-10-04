@@ -16,8 +16,8 @@ const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
 let client = null;
 
-app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, '../assets')));
 app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag: false }));
 app.use(history());
@@ -39,7 +39,7 @@ const connnectToDB = async () => {
     }
 }
 
-const database = async ()=>{
+const database = async () => {
     const client = await connnectToDB();
     return client.db(process.env.MONGO_DBNAME || 'shoeDb');
 }
@@ -99,6 +99,39 @@ app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
     const cartItems = cartItemIds.map(id => products.find(product => product.id === id));
     res.status(200).json(cartItems);
 })
+
+//Todo: User Resgistration
+app.post('/api/users/register', async (req, res) => {
+    const { email, password } = req.body;
+    let message = '';
+    if (!email || !password) {
+        message = "All fields are mndatory"
+        res.status(400).send(message);
+    }
+    const db = await database();
+    const userAVL = await db.collection('users').findOne({ email });
+    if (userAVL) {
+        message = "User is already registered";
+        res.status(202).send(message);
+    }
+    const user = await db.collection('users').insertOne({
+        mail: email,
+        pass: password,
+        cartItems: []
+    })
+    const userCheck = await db.collection('users').findOne({ email });
+    if (userCheck) {
+        message = "User has been registered";
+        res.status(200).send(message);
+    }
+});
+
+//Todo: User Login
+app.post('/api/users/login', async (req, res) => {
+    // TODO: blah blah blah
+    res.status(200).json();
+});
+
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));

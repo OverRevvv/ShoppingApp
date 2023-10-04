@@ -90,8 +90,16 @@ const visibiltiy2 = () => {
   align-items: center;
   flex-direction: column;
   border-radius: 16px;
+  /* perspective: 500px; */
 }
-.authBox h1{
+
+/* .authBox:hover {
+  transform: rotateY(180deg);
+  transition: transform 1s;
+  backface-visibility: hidden;
+} */
+
+.authBox h1 {
   font-size: 2.5rem;
 }
 
@@ -125,7 +133,7 @@ input::placeholder {
 }
 
 i {
-  color: #ff1909 ;
+  color: #ff1909;
   text-shadow: 0px 0px 20px #f7f7f7;
   margin-top: 5px;
   font-size: 1.4rem;
