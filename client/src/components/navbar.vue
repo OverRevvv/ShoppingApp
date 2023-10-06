@@ -1,8 +1,22 @@
+<script setup>
+import { ref } from 'vue';
+import { user } from '../log';
+const user_is_logged_in = ref(false)
+
+const logout = async () => {
+    // TODO: Implement login logic
+    console.log(user.isLogged, " Before Logout Button has been pressed");
+    user.logUserOut();
+    console.log(user.isLogged , " After Logout Button has been pressed");
+}
+
+</script>
 <template>
     <div class="nav-bar blurNav">
         <router-link to="/products" id="products-link">
             <div class="logo"> <img src="/sneaker.png" alt=""> </div>
         </router-link>
+        <button @click="logout">Logout</button>
         <router-link to="/cart" id="cart-link">
             <div class="wrapper">
                 <i class="fa">&#xf07a;</i>
@@ -25,10 +39,12 @@
     inset: 0 0 0 0;
     z-index: 20;
 }
-.wrapper{
+
+.wrapper {
     margin: auto auto;
     margin-right: 50px;
 }
+
 i {
     font-size: 60px;
     color: black;
@@ -66,6 +82,7 @@ i {
     right: 3.5rem;
     top: .6rem;
 }
+
 #login-link {
     position: absolute;
     right: 16px;

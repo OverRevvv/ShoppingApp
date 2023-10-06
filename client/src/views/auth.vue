@@ -1,5 +1,5 @@
 <script setup>
-// import { useState } from 'vue';
+import { user } from '../log';
 import { ref } from 'vue';
 const isHidden1 = ref(true);
 const isHidden2 = ref(true);
@@ -15,6 +15,9 @@ const btnColor2 = ref(null);
 
 const login = async () => {
   // TODO: Implement login logic
+  console.log(user.isLogged, " Before Login Button has been pressed");
+  user.logUserIn();
+  console.log(user.isLogged, " After Login Button has been pressed");
 };
 
 const signup = async () => {
@@ -67,9 +70,6 @@ const visibiltiy2 = () => {
       <button @click="signup">Sign Up</button>
     </div>
   </div>
-  <!-- <i class="fa"></i> -->
-  <!-- <i class="fa">&#xf070;</i> -->
-  <!-- <i class="fa">&#xf06e;</i> -->
 </template>
 <style scoped>
 .container {

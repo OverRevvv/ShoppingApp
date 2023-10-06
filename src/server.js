@@ -148,8 +148,6 @@ app.get('/api/users/login', async (req, res) => {
     const user = await db.collection('users').findOne({ mail: email });
     if (user) {
         message = "Found the User";
-        // req.session.user_id = user.id;
-        // res.status(202).send([user._id , message]);
         res.status(202).send([req.session.id, message]);
     }
     else {
@@ -164,6 +162,7 @@ app.get('/api/users/logout', async (req, res) => {
     res.status(202).send("User has been logged out");
     // res.redirect('/users/login');
 });
+// Todo: User isLogin endpoint for the global state of the client to authenticate the session id
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
