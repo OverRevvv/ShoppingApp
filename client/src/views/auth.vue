@@ -1,5 +1,6 @@
 <script setup>
 import { user } from '../log';
+import axios from 'axios';
 import { ref } from 'vue';
 const isHidden1 = ref(true);
 const isHidden2 = ref(true);
@@ -8,21 +9,27 @@ const inputRef2 = ref(null);
 const btnColor1 = ref(null);
 const btnColor2 = ref(null);
 
-// const loginEmail = useState('');
-// const loginPassword = useState('');
-// const signupEmail = useState('');
-// const signupPassword = useState('');
+const loginEmail = ref(null);
+const loginPassword = ref(null);
+const signupEmail = ref(null);
+const signupPassword = ref(null);
 
 const login = async () => {
-  // TODO: Implement login logic
-  console.log(user.isLogged, " Before Login Button has been pressed");
+  // const results = await axios.get(`/api/users/login`, {
+  //   email: loginEmail.value,
+  //   password: loginPassword.value
+  // });
   user.logUserIn();
-  console.log(user.isLogged, " After Login Button has been pressed");
+  // console.log(results.data)
 };
 
 const signup = async () => {
-  // TODO: Implement signup logic
+  await axios.post(`/api/users/register`, {
+    email: signupEmail.value,
+    password: signupPassword.value
+  });
 };
+
 
 const visibiltiy1 = () => {
   if (inputRef1.value.type == "password") {
@@ -81,10 +88,11 @@ const visibiltiy2 = () => {
 }
 
 .authBox {
-  height: 80%;
-  background-color: #11111170;
+  height: 70vh;
+  background-color: #1111119a;
   width: 40%;
   margin: 10px;
+  /* position: absolute; */
   display: flex;
   justify-content: center;
   align-items: center;
