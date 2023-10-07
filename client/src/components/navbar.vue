@@ -1,28 +1,24 @@
 <script setup>
-import { ref } from 'vue';
 import { user } from '../log';
-const user_is_logged_in = ref(false)
 
 const logout = async () => {
-    // TODO: Implement login logic
-    console.log(user.isLogged, " Before Logout Button has been pressed");
+    console.log(user.isLogged)
     user.logUserOut();
-    console.log(user.isLogged , " After Logout Button has been pressed");
+    console.log(user.isLogged)
 }
-
 </script>
 <template>
     <div class="nav-bar blurNav">
         <router-link to="/products" id="products-link">
             <div class="logo"> <img src="/sneaker.png" alt=""> </div>
         </router-link>
-        <button @click="logout">Logout</button>
         <router-link to="/cart" id="cart-link">
             <div class="wrapper">
                 <i class="fa">&#xf07a;</i>
             </div>
         </router-link>
-        <router-link to="/auth" id="login-link" class="auth">
+        <button v-if="user.isLogged" @click="logout" id="login-link" class="auth">Logout</button>
+        <router-link to="/auth" id="login-link" class="auth" v-else>
             <button>Login</button>
         </router-link>
     </div>

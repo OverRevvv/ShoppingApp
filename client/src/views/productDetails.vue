@@ -40,7 +40,6 @@ const itemIsInCart = computed(() => {
 <template>
     <div id="page-wrap">
         <div class="skeleton-wrap" v-show="inProgress">
-        <!-- <div class="skeleton-wrap"> -->
             <div class="skeleton-image blur" />
             <div id="product-details">
                 <div class="skeleton-name blur" />
