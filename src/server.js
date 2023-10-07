@@ -112,26 +112,28 @@ app.post('/api/users/register', async (req, res) => {
     const { email, password } = req.body;
     const cartItems = []
     let message = '';
-    if (!email || !password) {
-        message = "All fields are mndatory"
+    if (email == null || password == null) {
+        message = "All fields are mandatory"
         res.status(400).send(message);
     }
-    const db = await database();
-    const userAVL = await db.collection('users').findOne({ mail: email });
-    if (userAVL) {
-        message = "User is already registered";
-        res.status(202).send(message);
-    }
     else {
-        await db.collection('users').insertOne({
-            "mail": email,
-            "pass": password,
-            "cartItems": cartItems
-        })
-        const userCheck = await db.collection('users').findOne({ mail: email });
-        if (userCheck) {
-            message = "User has been registered";
-            res.status(200).send(message);
+        const db = await database();
+        const userAVL = await db.collection('users').findOne({ mail: email });
+        if (userAVL) {
+            message = "User is already registered";
+            res.status(202).send(message);
+        }
+        else {
+            await db.collection('users').insertOne({
+                "mail": email,
+                "pass": password,
+                "cartItems": cartItems
+            })
+            const userCheck = await db.collection('users').findOne({ mail: email });
+            if (userCheck) {
+                message = "User has been registered";
+                res.status(200).send(message);
+            }
         }
     }
 });
@@ -140,19 +142,21 @@ app.post('/api/users/register', async (req, res) => {
 app.get('/api/users/login', async (req, res) => {
     const { email, password } = req.body;
     let message = '';
-    if (!email || !password) {
-        message = "All fields are mndatory"
+    if (email == null || password == null) {
+        message = "All fields are mandatory"
         res.status(400).send(message);
     }
-    const db = await database();
-    const user = await db.collection('users').findOne({ mail: email });
-    if (user) {
-        message = "Found the User";
-        res.status(202).send([req.session.id, message]);
-    }
     else {
-        message = "User not found, kindly register first in order to login"
-        res.status(404).send(message);
+        const db = await database();
+        const user = await db.collection('users').findOne({ mail: email });
+        if (user) {
+            message = "Found the User";
+            res.status(202).send([req.session.id, message]);
+        }
+        else {
+            message = "User not found, kindly register first in order to login"
+            res.status(404).send(message);
+        }
     }
 });
 
