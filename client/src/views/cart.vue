@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { user } from '../log';
 import axios from 'axios'
 import productList from '../components/productList.vue';
 
@@ -7,7 +8,8 @@ const baseUrl = '/api';
 const cartItems = ref([]);
 const inProgress = ref(true)
 const getData = async () => {
-    const results = await axios.get(`${baseUrl}/users/1459/cart`);
+    console.log(user.userID);
+    const results = await axios.get(`${baseUrl}/users/${user.userID}/cart`);
     cartItems.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
@@ -20,7 +22,7 @@ const totalPrice = computed(() => {
 });
 
 async function removeFromCart(productId) {
-    const result = await axios.delete(`${baseUrl}/users/1459/cart/${productId}`);
+    const result = await axios.delete(`${baseUrl}/users/${user.userID}/cart/${productId}`);
     cartItems.value = result.data;
 }
 

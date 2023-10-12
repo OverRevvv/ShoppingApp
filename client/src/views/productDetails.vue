@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
+import { user } from '../log';
 import axios from 'axios'
 import NotFound from './notFound.vue';
 
@@ -19,13 +20,13 @@ const getData = async () => {
     setTimeout(() => {
         inProgress.value = false;
     }, 900);
-    const cartResults = await axios.get(`${baseUrl}/users/1459/cart`);
+    const cartResults = await axios.get(`${baseUrl}/users/${user.userID}/cart`);
     cartItems.value = cartResults.data;
 }
 getData();
 
 async function addToCart() {
-    await axios.post(`${baseUrl}/users/1459/cart`, {
+    await axios.post(`${baseUrl}/users/${user.userID}/cart`, {
         productId: productID
     });
     successMessage.value = true;

@@ -2,25 +2,26 @@
 import { user } from '../log';
 import axios from 'axios';
 import { ref } from 'vue';
+
 const isHidden1 = ref(true);
 const isHidden2 = ref(true);
 const inputRef1 = ref(null);
 const inputRef2 = ref(null);
 const btnColor1 = ref(null);
 const btnColor2 = ref(null);
-
 const loginEmail = ref(null);
 const loginPassword = ref(null);
 const signupEmail = ref(null);
 const signupPassword = ref(null);
 
 const login = async () => {
-  // const results = await axios.get(`/api/users/login`, {
-  //   email: loginEmail.value,
-  //   password: loginPassword.value
-  // });
-  user.logUserIn();
-  // console.log(results.data)
+  const results = await axios.post(`/api/users/login`, {
+    email: loginEmail.value,
+    password: loginPassword.value
+  });
+  console.log(results.data[0])
+  user.logUserIn(results.data[0]);
+  // user.logUserIn();
 };
 
 const signup = async () => {
