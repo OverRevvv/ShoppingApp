@@ -2,9 +2,7 @@
 import { user } from '../log';
 
 const logout = async () => {
-    console.log(user.isLogged)
     user.logUserOut();
-    console.log(user.isLogged)
 }
 </script>
 <template>
@@ -12,7 +10,7 @@ const logout = async () => {
         <router-link to="/products" id="products-link">
             <div class="logo"> <img src="/sneaker.png" alt=""> </div>
         </router-link>
-        <router-link to="/cart" id="cart-link">
+        <router-link v-if="user.isLogged" to="/cart" id="cart-link">
             <div class="wrapper">
                 <i class="fa">&#xf07a;</i>
             </div>

@@ -1,7 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import session from 'express-session';
+// import session from 'express-session';
+// import { Jwt } from 'jsonwebtoken';
 import { MongoClient } from 'mongodb';
 import path from 'path';
 // import history from 'connect-history-api-fallback';
@@ -16,18 +17,21 @@ const mongoAtlas = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_
 const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
 let client = null;
+// const accessToken = 'confidential2nd';
+
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, '../assets')));
 app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag: false }));
-app.use(session({
+/* app.use(session({
     secret: 'confidential',
     resave: false,
     saveUninitialized: true,
     host: 'localhost',
-}));
+})); */
 // app.use(history());
+
 
 const connnectToDB = async () => {
     if (client) { return client };
@@ -107,10 +111,11 @@ app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
     res.status(200).json(cartItems);
 })
 
-//Todo: User Resgistration
 app.post('/api/users/register', async (req, res) => {
     const { email, password } = req.body;
-    const cartItems = []
+    const randomDigit = () => {
+        return Math.floor((Math.random() * 10000) + 1);
+    }
     let message = '';
     if (email == null || password == null) {
         message = "All fields are mandatory"
@@ -125,9 +130,10 @@ app.post('/api/users/register', async (req, res) => {
         }
         else {
             await db.collection('users').insertOne({
+                "id": String(randomDigit()),
                 "mail": email,
                 "pass": password,
-                "cartItems": cartItems
+                "cartItems": []
             })
             const userCheck = await db.collection('users').findOne({ mail: email });
             if (userCheck) {
@@ -138,8 +144,7 @@ app.post('/api/users/register', async (req, res) => {
     }
 });
 
-//Todo: User Login
-app.get('/api/users/login', async (req, res) => {
+app.post('/api/users/login', async (req, res) => {
     const { email, password } = req.body;
     let message = '';
     if (email == null || password == null) {
@@ -151,7 +156,8 @@ app.get('/api/users/login', async (req, res) => {
         const user = await db.collection('users').findOne({ mail: email });
         if (user) {
             message = "Found the User";
-            res.status(202).send([req.session.id, message]);
+            // res.status(202).send([req.session.id, message]);
+            res.status(202).send([user.id, message]);
         }
         else {
             message = "User not found, kindly register first in order to login"
@@ -160,13 +166,11 @@ app.get('/api/users/login', async (req, res) => {
     }
 });
 
-//Todo: User Logout
 app.get('/api/users/logout', async (req, res) => {
-    req.session.destroy();
+    // req.session.destroy();
     res.status(202).send("User has been logged out");
     // res.redirect('/users/login');
 });
-// Todo: User isLogin endpoint for the global state of the client to authenticate the session id
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
