@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 
 export const user = reactive({
     isLogged: false,
@@ -12,3 +12,14 @@ export const user = reactive({
         this.userID = null;
     },
 })
+
+// Watch for changes in userID and update localStorage
+watch(() => user.userID, (newUserID) => {
+    window.localStorage.setItem('userID', newUserID);
+});
+
+// Check if userID is stored in localStorage on application load
+const StoredUserID = window.localStorage.getItem('userID');
+if (StoredUserID) {
+    user.logUserIn(StoredUserID);
+}
