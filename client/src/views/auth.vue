@@ -2,6 +2,7 @@
 import { user } from '../log';
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router'
 
 const isHidden1 = ref(true);
 const isHidden2 = ref(true);
@@ -13,15 +14,19 @@ const loginEmail = ref(null);
 const loginPassword = ref(null);
 const signupEmail = ref(null);
 const signupPassword = ref(null);
+const route = useRoute();
+const router = useRouter();
 
 const login = async () => {
   const results = await axios.post(`/api/users/login`, {
     email: loginEmail.value,
     password: loginPassword.value
   });
-  console.log(results.data[0])
+  // console.log(results.data[0])
   user.logUserIn(results.data[0]);
-  // user.logUserIn();
+  setTimeout(() => {
+    router.push('/products');
+  }, 1000);
 };
 
 const signup = async () => {
