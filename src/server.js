@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 // import session from 'express-session';
-// import { Jwt } from 'jsonwebtoken';
+import Jwt from 'jsonwebtoken';
 import { MongoClient } from 'mongodb';
 import path from 'path';
 // import history from 'connect-history-api-fallback';
@@ -16,8 +16,8 @@ if (port === 8000) {
 const mongoAtlas = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@freecluster.tfe0qix.mongodb.net/?retryWrites=true&w=majority`;
 const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
+const secret = "confidential"
 let client = null;
-// const accessToken = 'confidential2nd';
 
 
 app.use(cors());
@@ -31,6 +31,28 @@ app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag:
     host: 'localhost',
 })); */
 // app.use(history());
+
+const validateToken = (req, res, next) => {
+    /*     let token;
+        let authHeader = req.headers.Authorization || req.headers.authorization;
+        if (authHeader && authHeader.startsWith("Bearer")) {
+            token = authHeader.split(" ")[1];
+            Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+                if (err) {
+                    res.status(401);
+                    throw new Error("User is not authorized");
+                }
+                req.user = decoded.user;
+                next();
+    
+            });
+            if (!token) {
+                res.status(401);
+                throw new Error("User is not authorized or missing token")
+            }
+        } */
+    next();
+};
 
 
 const connnectToDB = async () => {
@@ -54,6 +76,7 @@ const database = async () => {
     const client = await connnectToDB();
     return client.db(process.env.MONGO_DBNAME || 'shoeDb');
 }
+
 
 app.get('/api/products', async (req, res) => {
     const db = await database();
@@ -157,7 +180,8 @@ app.post('/api/users/login', async (req, res) => {
         if (user) {
             message = "Found the User";
             // res.status(202).send([req.session.id, message]);
-            res.status(202).send([user.id, message]);
+            const token = Jwt.sign({ id: user.id, msg: message }, secret);
+            res.status(202).send(token);
         }
         else {
             message = "User not found, kindly register first in order to login"
