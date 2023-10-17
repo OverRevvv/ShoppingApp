@@ -7,9 +7,24 @@ import productList from '../components/productList.vue';
 const baseUrl = '/api';
 const cartItems = ref([]);
 const inProgress = ref(true)
-const getData = async () => {
+
+/* const getData = async () => {
     console.log(user.userID);
     const results = await axios.get(`${baseUrl}/users/${user.userID}/cart`);
+    cartItems.value = results.data;
+    setTimeout(() => {
+        inProgress.value = false;
+    }, 500);
+}
+getData(); */
+
+const getData = async () => {
+    console.table(user.token);
+    console.log(user.userID);
+    const config = {
+        headers: { Authorization: `Bearer ${user.token}` }
+    };
+    const results = await axios.get(`${baseUrl}/users/${user.userID}/cart`, config); // pass the config object as the second argument
     cartItems.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
@@ -31,14 +46,14 @@ async function removeFromCart(productId) {
     <div id="page-wrap">
         <h1 class="blur">Shopping Cart</h1>
         <div class="holder">
-        <div v-for="n in 3" :key="n" v-if="inProgress" class="skeleton-wrap blur">
-            <div class="skeleton-image"></div>
-            <div class="skeleton-details-wrap">
-                <div class="skeleton-name" />
-                <div class="skeleton-price" />
+            <div v-for="n in 3" :key="n" v-if="inProgress" class="skeleton-wrap blur">
+                <div class="skeleton-image"></div>
+                <div class="skeleton-details-wrap">
+                    <div class="skeleton-name" />
+                    <div class="skeleton-price" />
+                </div>
+                <div class="skeleton-button" />
             </div>
-            <div class="skeleton-button" />
-        </div>
         </div>
         <productList @remove-from-cart="removeFromCart($event)" :total-price="totalPrice" :products="cartItems" />
     </div>
@@ -49,7 +64,8 @@ async function removeFromCart(productId) {
     padding: 16px;
     max-width: 600px;
 }
-.holder{
+
+.holder {
     position: absolute;
     z-index: 10;
     width: 42%;

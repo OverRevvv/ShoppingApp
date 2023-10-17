@@ -2,7 +2,8 @@
 import { user } from '../log';
 import axios from 'axios';
 import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
+import jwt_decode from "jwt-decode";
 
 const isHidden1 = ref(true);
 const isHidden2 = ref(true);
@@ -14,8 +15,9 @@ const loginEmail = ref(null);
 const loginPassword = ref(null);
 const signupEmail = ref(null);
 const signupPassword = ref(null);
-const route = useRoute();
 const router = useRouter();
+const token = ref(null);
+const decodedToken = ref(null);
 
 const login = async () => {
   const results = await axios.post(`/api/users/login`, {
@@ -23,7 +25,11 @@ const login = async () => {
     password: loginPassword.value
   });
   // console.log(results.data[0])
-  user.logUserIn(results.data[0]);
+  token.value = results.data;
+  decodedToken.value = jwt_decode(token.value);
+  // console.log(token.value)
+  // console.log(decodedToken.value)
+  user.logUserIn(decodedToken.value.id, token.value);
   setTimeout(() => {
     router.push('/products');
   }, 1000);
