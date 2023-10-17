@@ -7,6 +7,7 @@ import { MongoClient } from 'mongodb';
 import path from 'path';
 // import history from 'connect-history-api-fallback';
 import dotenv from 'dotenv';
+import { error } from 'console';
 const port = process.env.PORT || 8000;
 
 if (port === 8000) {
@@ -16,7 +17,6 @@ if (port === 8000) {
 const mongoAtlas = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@freecluster.tfe0qix.mongodb.net/?retryWrites=true&w=majority`;
 const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
-const secret = "confidential"
 let client = null;
 
 
@@ -33,25 +33,28 @@ app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag:
 // app.use(history());
 
 const validateToken = (req, res, next) => {
-    /*     let token;
-        let authHeader = req.headers.Authorization || req.headers.authorization;
-        if (authHeader && authHeader.startsWith("Bearer")) {
-            token = authHeader.split(" ")[1];
-            Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-                if (err) {
-                    res.status(401);
-                    throw new Error("User is not authorized");
-                }
-                req.user = decoded.user;
-                next();
-    
-            });
-            if (!token) {
-                res.status(401);
-                throw new Error("User is not authorized or missing token")
+    try {
+        let token;
+        const authHeader = req.headers.Authorization || req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            res.status(401);
+            throw new Error("User is not authorized or missing token");
+        }
+
+        token = authHeader.split(" ")[1];
+        Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+            if (err) {
+                res.send(401);
+                throw new Error("User is not authorized");
             }
-        } */
-    next();
+            req.user = decoded.user;
+            next();
+        })
+    }
+    catch (error) {
+        next(error); // Pass the error to the error handler middleware
+    }
 };
 
 
@@ -84,7 +87,7 @@ app.get('/api/products', async (req, res) => {
     res.status(200).json(products);
 });
 
-app.get('/api/users/:userId/cart', async (req, res) => {
+app.get('/api/users/:userId/cart', validateToken, async (req, res) => {
     const { userId } = req.params;
     const db = await database();
     const user = await db.collection('users').findOne({ id: userId });
@@ -180,7 +183,7 @@ app.post('/api/users/login', async (req, res) => {
         if (user) {
             message = "Found the User";
             // res.status(202).send([req.session.id, message]);
-            const token = Jwt.sign({ id: user.id, msg: message }, secret);
+            const token = Jwt.sign({ id: user.id, mail: email, msg: message }, process.env.ACCESS_TOKEN_SECRET);
             res.status(202).send(token);
         }
         else {
