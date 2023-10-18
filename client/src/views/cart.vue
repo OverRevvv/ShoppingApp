@@ -1,30 +1,14 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { user } from '../log';
+import { user, config } from '../store/log';
 import axios from 'axios'
 import productList from '../components/productList.vue';
 
-const baseUrl = '/api';
 const cartItems = ref([]);
 const inProgress = ref(true)
 
-/* const getData = async () => {
-    console.log(user.userID);
-    const results = await axios.get(`${baseUrl}/users/${user.userID}/cart`);
-    cartItems.value = results.data;
-    setTimeout(() => {
-        inProgress.value = false;
-    }, 500);
-}
-getData(); */
-
 const getData = async () => {
-    console.table(user.token);
-    console.log(user.userID);
-    const config = {
-        headers: { Authorization: `Bearer ${user.token}` }
-    };
-    const results = await axios.get(`${baseUrl}/users/${user.userID}/cart`, config); // pass the config object as the second argument
+    const results = await axios.get(`/api/users/${user.userID}/cart`, config); 
     cartItems.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
@@ -37,7 +21,7 @@ const totalPrice = computed(() => {
 });
 
 async function removeFromCart(productId) {
-    const result = await axios.delete(`${baseUrl}/users/${user.userID}/cart/${productId}`);
+    const result = await axios.delete(`/api/users/${user.userID}/cart/${productId}`, config);
     cartItems.value = result.data;
 }
 

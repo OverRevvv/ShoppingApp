@@ -1,11 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import { user } from '../log';
+import { user, config } from '../store/log';
 import axios from 'axios'
 import NotFound from './notFound.vue';
 
-const baseUrl = '/api';
 const route = useRoute();
 const router = useRouter();
 const successMessage = ref(false);
@@ -15,20 +14,20 @@ const productID = route.params.id;
 // const product = ref(products.find((p) => p.id === productID));
 const product = ref([]);
 const getData = async () => {
-    const results = await axios.get(`${baseUrl}/products/${productID}`);
+    const results = await axios.get(`/api/products/${productID}`,config);
     product.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
     }, 900);
-    const cartResults = await axios.get(`${baseUrl}/users/${user.userID}/cart`);
+    const cartResults = await axios.get(`/api/users/${user.userID}/cart`,config);
     cartItems.value = cartResults.data;
 }
 getData();
 
 async function addToCart() {
-    await axios.post(`${baseUrl}/users/${user.userID}/cart`, {
+    await axios.post(`/api/users/${user.userID}/cart`, {
         productId: productID
-    });
+    },config);
     successMessage.value = true;
     setTimeout(() => {
         router.push('/products');

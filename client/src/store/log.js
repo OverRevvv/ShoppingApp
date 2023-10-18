@@ -22,5 +22,9 @@ export const user = reactive({
 const storedUserID = window.localStorage.getItem('userID');
 const storedToken = window.localStorage.getItem('access_token');
 if (storedUserID && storedToken) {
-    user.logUserIn(storedUserID,storedToken);
+    user.logUserIn(storedUserID, storedToken);
 }
+
+export const config = {
+    headers: { Authorization: `Bearer ${user.token}` }
+};

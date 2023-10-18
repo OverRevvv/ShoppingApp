@@ -7,9 +7,8 @@ import productsGrid from '../components/productsGrid.vue';
 
 
 const inProgress = ref(true)
-const baseUrl = '/api'
 const getData = async () => {
-    const results = await axios.get(`${baseUrl}/products`);
+    const results = await axios.get(`/api/products`);
     products.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
