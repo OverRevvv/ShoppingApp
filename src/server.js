@@ -28,19 +28,19 @@ const validateToken = (req, res, next) => {
     try {
         let token;
         const authHeader = req.headers.Authorization || req.headers.authorization;
-
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).send("User is not authorized or invalid/missing token");
+            console.log("fucked")
+            return res.status(401).send("User is not authorized or missing token");
         }
+        token = authHeader.split(" ")[1];
         if (BLACKLIST.has(token)) {
+            console.log(token);
             return res.status(401).send('Token revoked');
         }
-
-        token = authHeader.split(" ")[1];
         Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
-                res.send(401);
-                throw new Error("User is not authorized");
+                console.log(err);
+                return res.status(401).send("User is not authorized");
             }
             req.user = decoded.user;
             next();
@@ -188,10 +188,13 @@ app.post('/api/users/login', async (req, res) => {
     }
 });
 
-app.get('/api/users/logout', validateToken, async (req, res) => {
+app.get('/api/users/logout', async (req, res) => {
     const token = (req.headers.Authorization || req.headers.authorization).split(' ')[1]
     BLACKLIST.add(token);
     res.status(202).send("Logged out successfully");
+    setTimeout(() => {
+        BLACKLIST.delete(token)
+    }, 1000 * 60 * 60 * 24);
 });
 
 app.get('*', (req, res) => {

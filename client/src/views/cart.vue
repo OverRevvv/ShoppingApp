@@ -8,7 +8,7 @@ const cartItems = ref([]);
 const inProgress = ref(true)
 
 const getData = async () => {
-    const results = await axios.get(`/api/users/${user.userID}/cart`, config); 
+    const results = await axios.get(`/api/users/${user.userID}/cart`, config(user.token)); 
     cartItems.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
@@ -21,7 +21,7 @@ const totalPrice = computed(() => {
 });
 
 async function removeFromCart(productId) {
-    const result = await axios.delete(`/api/users/${user.userID}/cart/${productId}`, config);
+    const result = await axios.delete(`/api/users/${user.userID}/cart/${productId}`, config(user.token));
     cartItems.value = result.data;
 }
 

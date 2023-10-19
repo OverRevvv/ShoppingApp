@@ -3,7 +3,7 @@ import { user, config } from '../store/log';
 import axios from 'axios'
 
 const logout = async () => {
-    const results = await axios.get(`/api/users/logout`, config);
+    const results = await axios.get(`/api/users/logout`, config(user.token));
     user.logUserOut();
     console.log(results.data)
 }

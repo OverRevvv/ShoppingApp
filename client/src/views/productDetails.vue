@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify'
 import { user, config } from '../store/log';
 import axios from 'axios'
 import NotFound from './notFound.vue';
@@ -11,23 +12,33 @@ const successMessage = ref(false);
 const inProgress = ref(true)
 const cartItems = ref([]);
 const productID = route.params.id;
-// const product = ref(products.find((p) => p.id === productID));
+
 const product = ref([]);
 const getData = async () => {
-    const results = await axios.get(`/api/products/${productID}`,config);
+    const results = await axios.get(`/api/products/${productID}`);
     product.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
     }, 900);
-    const cartResults = await axios.get(`/api/users/${user.userID}/cart`,config);
-    cartItems.value = cartResults.data;
+    if (user.isLogged) {
+        const cartResults = await axios.get(`/api/users/${user.userID}/cart`, config(user.token));
+        cartItems.value = cartResults.data;
+    }
 }
 getData();
 
 async function addToCart() {
+    if (user.isLogged == false) {
+        toast.warn("Please Log in First", {
+            theme: 'dark',
+        })
+        setTimeout(() => {
+            router.push('/auth');
+        }, 1300);
+    }
     await axios.post(`/api/users/${user.userID}/cart`, {
         productId: productID
-    },config);
+    }, config);
     successMessage.value = true;
     setTimeout(() => {
         router.push('/products');
