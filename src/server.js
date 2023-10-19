@@ -1,13 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-// import session from 'express-session';
 import Jwt from 'jsonwebtoken';
 import { MongoClient } from 'mongodb';
 import path from 'path';
 // import history from 'connect-history-api-fallback';
 import dotenv from 'dotenv';
-import { error } from 'console';
 const port = process.env.PORT || 8000;
 
 if (port === 8000) {
@@ -18,42 +16,38 @@ const mongoAtlas = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_
 const mongoLocal = 'mongodb://127.0.0.1:27017';
 const app = express();
 let client = null;
-
+const BLACKLIST = new Set();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, '../assets')));
 app.use(express.static(path.resolve(__dirname, '../dist'), { maxAge: '1y', etag: false }));
-/* app.use(session({
-    secret: 'confidential',
-    resave: false,
-    saveUninitialized: true,
-    host: 'localhost',
-})); */
 // app.use(history());
 
 const validateToken = (req, res, next) => {
     try {
         let token;
         const authHeader = req.headers.Authorization || req.headers.authorization;
-
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            res.status(401);
-            throw new Error("User is not authorized or missing token");
+            console.log("fucked")
+            return res.status(401).send("User is not authorized or missing token");
         }
-
         token = authHeader.split(" ")[1];
+        if (BLACKLIST.has(token)) {
+            console.log(token);
+            return res.status(401).send('Token revoked');
+        }
         Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
             if (err) {
-                res.send(401);
-                throw new Error("User is not authorized");
+                console.log(err);
+                return res.status(401).send("User is not authorized");
             }
             req.user = decoded.user;
             next();
         })
     }
     catch (error) {
-        next(error); // Pass the error to the error handler middleware
+        next(error);
     }
 };
 
@@ -109,7 +103,7 @@ app.get('/api/products/:productId', async (req, res) => {
     }
 })
 
-app.post('/api/users/:userId/cart', async (req, res) => {
+app.post('/api/users/:userId/cart', validateToken, async (req, res) => {
     const { userId } = req.params;
     const { productId } = req.body;
     const db = await database();
@@ -124,7 +118,7 @@ app.post('/api/users/:userId/cart', async (req, res) => {
     res.status(200).json(cartItems);
 });
 
-app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
+app.delete('/api/users/:userId/cart/:productId', validateToken, async (req, res) => {
     const { userId, productId } = req.params;
     const db = await database();
     await db.collection('users').updateOne({ id: userId }, {
@@ -181,9 +175,10 @@ app.post('/api/users/login', async (req, res) => {
         const db = await database();
         const user = await db.collection('users').findOne({ mail: email });
         if (user) {
-            message = "Found the User";
-            // res.status(202).send([req.session.id, message]);
-            const token = Jwt.sign({ id: user.id, mail: email, msg: message }, process.env.ACCESS_TOKEN_SECRET);
+            message = "Logged in Successfully";
+            const token = Jwt.sign({ id: user.id, mail: email, msg: message }, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: '1d'
+            });
             res.status(202).send(token);
         }
         else {
@@ -194,9 +189,12 @@ app.post('/api/users/login', async (req, res) => {
 });
 
 app.get('/api/users/logout', async (req, res) => {
-    // req.session.destroy();
-    res.status(202).send("User has been logged out");
-    // res.redirect('/users/login');
+    const token = (req.headers.Authorization || req.headers.authorization).split(' ')[1]
+    BLACKLIST.add(token);
+    res.status(202).send("Logged out successfully");
+    setTimeout(() => {
+        BLACKLIST.delete(token)
+    }, 1000 * 60 * 60 * 24);
 });
 
 app.get('*', (req, res) => {

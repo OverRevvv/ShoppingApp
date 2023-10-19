@@ -1,34 +1,44 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
-import { user } from '../log';
+import { toast } from 'vue3-toastify'
+import { user, config } from '../store/log';
 import axios from 'axios'
 import NotFound from './notFound.vue';
 
-const baseUrl = '/api';
 const route = useRoute();
 const router = useRouter();
 const successMessage = ref(false);
 const inProgress = ref(true)
 const cartItems = ref([]);
 const productID = route.params.id;
-// const product = ref(products.find((p) => p.id === productID));
+
 const product = ref([]);
 const getData = async () => {
-    const results = await axios.get(`${baseUrl}/products/${productID}`);
+    const results = await axios.get(`/api/products/${productID}`);
     product.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
     }, 900);
-    const cartResults = await axios.get(`${baseUrl}/users/${user.userID}/cart`);
-    cartItems.value = cartResults.data;
+    if (user.isLogged) {
+        const cartResults = await axios.get(`/api/users/${user.userID}/cart`, config(user.token));
+        cartItems.value = cartResults.data;
+    }
 }
 getData();
 
 async function addToCart() {
-    await axios.post(`${baseUrl}/users/${user.userID}/cart`, {
+    if (user.isLogged == false) {
+        toast.warn("Please Log in First", {
+            theme: 'dark',
+        })
+        setTimeout(() => {
+            router.push('/auth');
+        }, 1300);
+    }
+    await axios.post(`/api/users/${user.userID}/cart`, {
         productId: productID
-    });
+    }, config);
     successMessage.value = true;
     setTimeout(() => {
         router.push('/products');

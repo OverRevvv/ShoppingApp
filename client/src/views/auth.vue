@@ -1,5 +1,6 @@
 <script setup>
-import { user } from '../log';
+import { user } from '../store/log';
+import { toast } from 'vue3-toastify'
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
@@ -16,20 +17,17 @@ const loginPassword = ref(null);
 const signupEmail = ref(null);
 const signupPassword = ref(null);
 const router = useRouter();
-const token = ref(null);
-const decodedToken = ref(null);
 
 const login = async () => {
   const results = await axios.post(`/api/users/login`, {
     email: loginEmail.value,
     password: loginPassword.value
   });
-  // console.log(results.data[0])
-  token.value = results.data;
-  decodedToken.value = jwt_decode(token.value);
-  // console.log(token.value)
-  // console.log(decodedToken.value)
-  user.logUserIn(decodedToken.value.id, token.value);
+  const decodedToken = jwt_decode(results.data);
+  user.logUserIn(decodedToken.id, results.data);
+  toast.success(`User ${decodedToken.mail} has ${decodedToken.msg}`, {
+    theme: 'dark',
+  });
   setTimeout(() => {
     router.push('/products');
   }, 1000);
