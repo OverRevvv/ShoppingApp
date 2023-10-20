@@ -1,11 +1,14 @@
 <script setup>
 import { user, config } from '../store/log';
+import { toast } from 'vue3-toastify'
 import axios from 'axios'
 
 const logout = async () => {
     const results = await axios.get(`/api/users/logout`, config(user.token));
     user.logUserOut();
-    console.log(results.data)
+    toast.success(`${results.data}`, {
+        theme: 'dark',
+    });
 }
 </script>
 <template>

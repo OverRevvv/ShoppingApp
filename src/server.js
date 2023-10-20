@@ -29,12 +29,10 @@ const validateToken = (req, res, next) => {
         let token;
         const authHeader = req.headers.Authorization || req.headers.authorization;
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            console.log("fucked")
             return res.status(401).send("User is not authorized or missing token");
         }
         token = authHeader.split(" ")[1];
         if (BLACKLIST.has(token)) {
-            console.log(token);
             return res.status(401).send('Token revoked');
         }
         Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {

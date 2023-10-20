@@ -38,6 +38,9 @@ const signup = async () => {
     email: signupEmail.value,
     password: signupPassword.value
   });
+  toast.success(`${signupEmail.value} Has Successfully Registered `, {
+    theme: 'dark',
+  });
 };
 
 

@@ -12,5 +12,5 @@ defineProps({
         <h3 class="total-price blur">Total: ${{ totalPrice }}</h3>
         <button id="checkout-button">Proceed to checkout</button>
     </div>
-    <p v-else>You haven't added anything yet!</p>
+    <p v-else class="blur">You haven't added anything yet!</p>
 </template>

@@ -1,28 +1,62 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeMount, watchEffect } from 'vue';
+import { useRouter, useRoute } from 'vue-router'
+import { toast } from 'vue3-toastify'
 import { user, config } from '../store/log';
 import axios from 'axios'
 import productList from '../components/productList.vue';
 
 const cartItems = ref([]);
 const inProgress = ref(true)
+const router = useRouter();
+const route = useRoute();
 
 const getData = async () => {
-    const results = await axios.get(`/api/users/${user.userID}/cart`, config(user.token)); 
+    const results = await axios.get(`/api/users/${user.userID}/cart`, config(user.token));
     cartItems.value = results.data;
+    console.log(route.path)
     setTimeout(() => {
         inProgress.value = false;
     }, 500);
 }
-getData();
+
+onBeforeMount(async () => {
+    if (!user.isLogged) {
+        router.push('/auth');
+        return;
+    }
+    await getData();
+});
+
+watchEffect(() => {
+    if (user.isLogged == false) {
+        if (route.path !== '/auth') {
+            router.push('/auth')
+        }
+    }
+});
+
 
 const totalPrice = computed(() => {
     return cartItems.value.reduce((sum, item) => sum + Number(item.price), 0);
 });
 
 async function removeFromCart(productId) {
-    const result = await axios.delete(`/api/users/${user.userID}/cart/${productId}`, config(user.token));
-    cartItems.value = result.data;
+    if (user.isLogged === false) {
+        toast.warn("Please Log in First", {
+            theme: 'dark',
+        })
+        setTimeout(() => {
+            router.push('/auth');
+        }, 1300);
+    } else {
+        const result = await axios.delete(`/api/users/${user.userID}/cart/${productId}`, config(user.token));
+        cartItems.value = result.data;
+        toast.success("Item has been removed from cart", {
+            theme: 'dark',
+            autoClose: 3000,
+        })
+    }
 }
 
 </script>
