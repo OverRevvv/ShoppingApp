@@ -6,10 +6,12 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 var _express = _interopRequireDefault(require("express"));
 var _bodyParser = _interopRequireDefault(require("body-parser"));
 var _cors = _interopRequireDefault(require("cors"));
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var _mongodb = require("mongodb");
 var _path = _interopRequireDefault(require("path"));
-var _connectHistoryApiFallback = _interopRequireDefault(require("connect-history-api-fallback"));
 var _dotenv = _interopRequireDefault(require("dotenv"));
+// import history from 'connect-history-api-fallback';
+
 var port = process.env.PORT || 8000;
 if (port === 8000) {
   _dotenv["default"].config();
@@ -18,14 +20,39 @@ var mongoAtlas = "mongodb+srv://".concat(process.env.MONGO_USER, ":").concat(pro
 var mongoLocal = 'mongodb://127.0.0.1:27017';
 var app = (0, _express["default"])();
 var client = null;
-app.use(_bodyParser["default"].json());
+var BLACKLIST = new Set();
 app.use((0, _cors["default"])());
+app.use(_bodyParser["default"].json());
 app.use('/images', _express["default"]["static"](_path["default"].join(__dirname, '../assets')));
 app.use(_express["default"]["static"](_path["default"].resolve(__dirname, '../dist'), {
   maxAge: '1y',
   etag: false
 }));
-app.use((0, _connectHistoryApiFallback["default"])());
+// app.use(history());
+
+var validateToken = function validateToken(req, res, next) {
+  try {
+    var token;
+    var authHeader = req.headers.Authorization || req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).send("User is not authorized or missing token");
+    }
+    token = authHeader.split(" ")[1];
+    if (BLACKLIST.has(token)) {
+      return res.status(401).send('Token revoked');
+    }
+    _jsonwebtoken["default"].verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+      if (err) {
+        console.log(err);
+        return res.status(401).send("User is not authorized");
+      }
+      req.user = decoded.user;
+      next();
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 var connnectToDB = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
     return _regenerator["default"].wrap(function _callee$(_context) {
@@ -108,7 +135,7 @@ app.get('/api/products', /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }());
-app.get('/api/users/:userId/cart', /*#__PURE__*/function () {
+app.get('/api/users/:userId/cart', validateToken, /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
     var userId, db, user, products, cartItemIds, cartItems;
     return _regenerator["default"].wrap(function _callee4$(_context4) {
@@ -184,7 +211,7 @@ app.get('/api/products/:productId', /*#__PURE__*/function () {
     return _ref5.apply(this, arguments);
   };
 }());
-app.post('/api/users/:userId/cart', /*#__PURE__*/function () {
+app.post('/api/users/:userId/cart', validateToken, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
     var userId, productId, db, user, products, cartItemIds, cartItems;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
@@ -232,7 +259,7 @@ app.post('/api/users/:userId/cart', /*#__PURE__*/function () {
     return _ref6.apply(this, arguments);
   };
 }());
-app["delete"]('/api/users/:userId/cart/:productId', /*#__PURE__*/function () {
+app["delete"]('/api/users/:userId/cart/:productId', validateToken, /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
     var _req$params, userId, productId, db, user, products, cartItemIds, cartItems;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
@@ -277,6 +304,146 @@ app["delete"]('/api/users/:userId/cart/:productId', /*#__PURE__*/function () {
   }));
   return function (_x9, _x10) {
     return _ref7.apply(this, arguments);
+  };
+}());
+app.post('/api/users/register', /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res) {
+    var _req$body, email, password, randomDigit, message, db, userAVL, userCheck;
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
+        case 0:
+          _req$body = req.body, email = _req$body.email, password = _req$body.password;
+          randomDigit = function randomDigit() {
+            return Math.floor(Math.random() * 10000 + 1);
+          };
+          message = '';
+          if (!(email == null || password == null)) {
+            _context8.next = 8;
+            break;
+          }
+          message = "All fields are mandatory";
+          res.status(400).send(message);
+          _context8.next = 25;
+          break;
+        case 8:
+          _context8.next = 10;
+          return database();
+        case 10:
+          db = _context8.sent;
+          _context8.next = 13;
+          return db.collection('users').findOne({
+            mail: email
+          });
+        case 13:
+          userAVL = _context8.sent;
+          if (!userAVL) {
+            _context8.next = 19;
+            break;
+          }
+          message = "User is already registered";
+          res.status(202).send(message);
+          _context8.next = 25;
+          break;
+        case 19:
+          _context8.next = 21;
+          return db.collection('users').insertOne({
+            "id": String(randomDigit()),
+            "mail": email,
+            "pass": password,
+            "cartItems": []
+          });
+        case 21:
+          _context8.next = 23;
+          return db.collection('users').findOne({
+            mail: email
+          });
+        case 23:
+          userCheck = _context8.sent;
+          if (userCheck) {
+            message = "User has been registered";
+            res.status(200).send(message);
+          }
+        case 25:
+        case "end":
+          return _context8.stop();
+      }
+    }, _callee8);
+  }));
+  return function (_x11, _x12) {
+    return _ref8.apply(this, arguments);
+  };
+}());
+app.post('/api/users/login', /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res) {
+    var _req$body2, email, password, message, db, user, token;
+    return _regenerator["default"].wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
+        case 0:
+          _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
+          message = '';
+          if (!(email == null || password == null)) {
+            _context9.next = 7;
+            break;
+          }
+          message = "All fields are mandatory";
+          res.status(400).send(message);
+          _context9.next = 14;
+          break;
+        case 7:
+          _context9.next = 9;
+          return database();
+        case 9:
+          db = _context9.sent;
+          _context9.next = 12;
+          return db.collection('users').findOne({
+            mail: email
+          });
+        case 12:
+          user = _context9.sent;
+          if (user) {
+            message = "Logged in Successfully";
+            token = _jsonwebtoken["default"].sign({
+              id: user.id,
+              mail: email,
+              msg: message
+            }, process.env.ACCESS_TOKEN_SECRET, {
+              expiresIn: '1d'
+            });
+            res.status(202).send(token);
+          } else {
+            message = "User not found, kindly register first in order to login";
+            res.status(404).send(message);
+          }
+        case 14:
+        case "end":
+          return _context9.stop();
+      }
+    }, _callee9);
+  }));
+  return function (_x13, _x14) {
+    return _ref9.apply(this, arguments);
+  };
+}());
+app.get('/api/users/logout', /*#__PURE__*/function () {
+  var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res) {
+    var token;
+    return _regenerator["default"].wrap(function _callee10$(_context10) {
+      while (1) switch (_context10.prev = _context10.next) {
+        case 0:
+          token = (req.headers.Authorization || req.headers.authorization).split(' ')[1];
+          BLACKLIST.add(token);
+          res.status(202).send("Logged out successfully");
+          setTimeout(function () {
+            BLACKLIST["delete"](token);
+          }, 1000 * 60 * 60 * 24);
+        case 4:
+        case "end":
+          return _context10.stop();
+      }
+    }, _callee10);
+  }));
+  return function (_x15, _x16) {
+    return _ref10.apply(this, arguments);
   };
 }());
 app.get('*', function (req, res) {

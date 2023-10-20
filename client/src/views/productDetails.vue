@@ -28,7 +28,7 @@ const getData = async () => {
 getData();
 
 async function addToCart() {
-    if (user.isLogged == false) {
+    if (user.isLogged === false) {
         toast.warn("Please Log in First", {
             theme: 'dark',
         })
@@ -36,13 +36,18 @@ async function addToCart() {
             router.push('/auth');
         }, 1300);
     }
-    await axios.post(`/api/users/${user.userID}/cart`, {
-        productId: productID
-    }, config);
-    successMessage.value = true;
-    setTimeout(() => {
-        router.push('/products');
-    }, 1500);
+    else {
+        await axios.post(`/api/users/${user.userID}/cart`, {
+            productId: productID
+        }, config(user.token));
+        successMessage.value = true;
+        toast.success("Item has been added", {
+            theme: 'dark',
+        })
+        setTimeout(() => {
+            router.push('/products');
+        }, 1500);
+    }
 }
 const itemIsInCart = computed(() => {
     return cartItems.value.some(item => item.id === productID);
@@ -203,4 +208,16 @@ img {
     margin: 0 auto;
     margin-top: 0.3rem;
 }
+
+/* 
+VS code themes 
+winter is coming
+pro hacker theme
+palenight theme
+Ayu theme
+Bearded theme
+One dark Pro
+Vibrancy Continued
+
+ */
 </style>
