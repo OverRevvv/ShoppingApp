@@ -172,12 +172,15 @@ app.post('/api/users/login', async (req, res) => {
     else {
         const db = await database();
         const user = await db.collection('users').findOne({ mail: email });
-        if (user) {
+        if (user.mail === email && user.pass === password) {
             message = "Logged in Successfully";
             const token = Jwt.sign({ id: user.id, mail: email, msg: message }, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '1d'
             });
             res.status(202).send(token);
+        }
+        else if (user.pass !== password) {
+            res.status(401).send("Provided Password is wrong, Please provide correct Password")
         }
         else {
             message = "User not found, kindly register first in order to login"

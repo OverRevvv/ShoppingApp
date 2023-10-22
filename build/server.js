@@ -400,7 +400,7 @@ app.post('/api/users/login', /*#__PURE__*/function () {
           });
         case 12:
           user = _context9.sent;
-          if (user) {
+          if (user.mail === email && user.pass === password) {
             message = "Logged in Successfully";
             token = _jsonwebtoken["default"].sign({
               id: user.id,
@@ -410,6 +410,8 @@ app.post('/api/users/login', /*#__PURE__*/function () {
               expiresIn: '1d'
             });
             res.status(202).send(token);
+          } else if (user.pass !== password) {
+            res.status(401).send("Provided Password is wrong, Please provide correct Password");
           } else {
             message = "User not found, kindly register first in order to login";
             res.status(404).send(message);
