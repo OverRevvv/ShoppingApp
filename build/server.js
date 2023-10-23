@@ -360,7 +360,7 @@ app.post('/api/users/register', /*#__PURE__*/function () {
         case 23:
           userCheck = _context8.sent;
           if (userCheck) {
-            message = "User has been registered";
+            message = "".concat(user.mail, " has been successfully registered!!");
             res.status(200).send(message);
           }
         case 25:
@@ -375,46 +375,64 @@ app.post('/api/users/register', /*#__PURE__*/function () {
 }());
 app.post('/api/users/login', /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res) {
-    var _req$body2, email, password, message, db, user, token;
+    var _req$body2, email, password, message, db, _user, token;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
         case 0:
           _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
           message = '';
           if (!(email == null || password == null)) {
-            _context9.next = 7;
+            _context9.next = 8;
             break;
           }
           message = "All fields are mandatory";
           res.status(400).send(message);
-          _context9.next = 14;
-          break;
-        case 7:
-          _context9.next = 9;
+          return _context9.abrupt("return");
+        case 8:
+          _context9.next = 10;
           return database();
-        case 9:
+        case 10:
           db = _context9.sent;
-          _context9.next = 12;
+          _context9.next = 13;
           return db.collection('users').findOne({
             mail: email
           });
-        case 12:
-          user = _context9.sent;
-          if (user) {
-            message = "Logged in Successfully";
-            token = _jsonwebtoken["default"].sign({
-              id: user.id,
-              mail: email,
-              msg: message
-            }, process.env.ACCESS_TOKEN_SECRET, {
-              expiresIn: '1d'
-            });
-            res.status(202).send(token);
-          } else {
-            message = "User not found, kindly register first in order to login";
-            res.status(404).send(message);
+        case 13:
+          _user = _context9.sent;
+          if (!(_user === null)) {
+            _context9.next = 17;
+            break;
           }
-        case 14:
+          res.status(404).send("User not found, kindly register first in order to login");
+          return _context9.abrupt("return");
+        case 17:
+          if (!(_user.mail === email && _user.pass === password)) {
+            _context9.next = 23;
+            break;
+          }
+          message = "".concat(email, " has logged in Successfully!!");
+          token = _jsonwebtoken["default"].sign({
+            id: _user.id,
+            mail: email,
+            msg: message
+          }, process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: '1d'
+          });
+          res.status(202).send(token);
+          _context9.next = 29;
+          break;
+        case 23:
+          if (!(_user.pass !== password)) {
+            _context9.next = 27;
+            break;
+          }
+          res.status(401).send("Provided Password is wrong, Please provide correct Password");
+          _context9.next = 29;
+          break;
+        case 27:
+          res.status(404).send('something went wrong');
+          return _context9.abrupt("return");
+        case 29:
         case "end":
           return _context9.stop();
       }

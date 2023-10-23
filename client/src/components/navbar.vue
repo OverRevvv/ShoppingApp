@@ -60,6 +60,13 @@ i {
 .logo img {
     width: 5rem;
     transform: translate(2rem, -1rem);
+    transition: transform 0.5s;
+}
+
+.logo img:hover {
+    transform: translate(2rem, -1.2rem);
+    transition: transform 0.5s;
+    filter: drop-shadow(0 0 2px #04f2fa);
 }
 
 #products-link {
