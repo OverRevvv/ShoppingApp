@@ -89,7 +89,7 @@ html::before {
   content: "";
   background: url(https://images.unsplash.com/photo-1609011809547-fec587101c8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80);
   background-position: center;
-  background-color: #da5325 ;
+  background-color: #da5325;
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -105,7 +105,8 @@ html::before {
   text-overflow: ellipsis;
   text-shadow: 1px 1px 0 black;
 }
-.blur-prod{
+
+.blur-prod {
   background: #00000056;
   backdrop-filter: saturate(100%) blur(10px);
   white-space: wrap;
@@ -128,16 +129,22 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: #25bff7;
+  transform: translateY(-4%);
+  filter: drop-shadow(0 0 2px #25bff7);
+
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border-color: #25bff7;
+  transform: translateY(-4%);
+  filter: drop-shadow(0 0 2px #25bff7);
 }
 
 .card {

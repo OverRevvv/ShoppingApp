@@ -155,7 +155,7 @@ app.post('/api/users/register', async (req, res) => {
             })
             const userCheck = await db.collection('users').findOne({ mail: email });
             if (userCheck) {
-                message = "User has been registered";
+                message = `${user.mail} has been successfully registered!!`;
                 res.status(200).send(message);
             }
         }
@@ -168,12 +168,17 @@ app.post('/api/users/login', async (req, res) => {
     if (email == null || password == null) {
         message = "All fields are mandatory"
         res.status(400).send(message);
+        return;
     }
     else {
         const db = await database();
         const user = await db.collection('users').findOne({ mail: email });
+        if (user === null) {
+            res.status(404).send("User not found, kindly register first in order to login");
+            return;
+        }
         if (user.mail === email && user.pass === password) {
-            message = "Logged in Successfully";
+            message = `${email} has logged in Successfully!!`;
             const token = Jwt.sign({ id: user.id, mail: email, msg: message }, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '1d'
             });
@@ -183,8 +188,8 @@ app.post('/api/users/login', async (req, res) => {
             res.status(401).send("Provided Password is wrong, Please provide correct Password")
         }
         else {
-            message = "User not found, kindly register first in order to login"
-            res.status(404).send(message);
+            res.status(404).send('something went wrong');
+            return;
         }
     }
 });

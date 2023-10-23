@@ -125,7 +125,6 @@ img {
 }
 
 #price {
-    /* position: absolute; */
     top: 24px;
     right: 16px;
 }
