@@ -4,9 +4,9 @@ import Footer from './components/footer.vue';
 </script>
 
 <template>
-  <navbar/>
+  <navbar />
   <router-view />
-  <Footer/>
+  <Footer />
 </template>
 
 <style>
@@ -18,6 +18,7 @@ import Footer from './components/footer.vue';
 #page-wrap {
   margin: auto;
   /* max-width: 800px; */
+  scroll-behavior: smooth;
   min-height: 100vh;
   overflow: hidden;
 }

@@ -155,7 +155,7 @@ app.post('/api/users/register', async (req, res) => {
             })
             const userCheck = await db.collection('users').findOne({ mail: email });
             if (userCheck) {
-                message = `${user.mail} has been successfully registered!!`;
+                message = `${userCheck.mail} has been successfully registered!!`;
                 res.status(200).send(message);
             }
         }

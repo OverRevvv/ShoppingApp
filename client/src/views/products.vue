@@ -12,7 +12,7 @@ const getData = async () => {
     products.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
-    }, 500);
+    }, 300);
 }
 getData();
 </script>
@@ -26,7 +26,9 @@ getData();
                 <div class="skeleton-button" />
             </div>
         </div>
-        <productsGrid :products="products" />
+        <Suspense>
+            <productsGrid :products="products" />
+        </Suspense>
     </div>
 </template>
 <style scoped>
