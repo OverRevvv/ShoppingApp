@@ -360,7 +360,7 @@ app.post('/api/users/register', /*#__PURE__*/function () {
         case 23:
           userCheck = _context8.sent;
           if (userCheck) {
-            message = "".concat(user.mail, " has been successfully registered!!");
+            message = "".concat(userCheck.mail, " has been successfully registered!!");
             res.status(200).send(message);
           }
         case 25:
@@ -375,7 +375,7 @@ app.post('/api/users/register', /*#__PURE__*/function () {
 }());
 app.post('/api/users/login', /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res) {
-    var _req$body2, email, password, message, db, _user, token;
+    var _req$body2, email, password, message, db, user, token;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) switch (_context9.prev = _context9.next) {
         case 0:
@@ -398,21 +398,21 @@ app.post('/api/users/login', /*#__PURE__*/function () {
             mail: email
           });
         case 13:
-          _user = _context9.sent;
-          if (!(_user === null)) {
+          user = _context9.sent;
+          if (!(user === null)) {
             _context9.next = 17;
             break;
           }
           res.status(404).send("User not found, kindly register first in order to login");
           return _context9.abrupt("return");
         case 17:
-          if (!(_user.mail === email && _user.pass === password)) {
+          if (!(user.mail === email && user.pass === password)) {
             _context9.next = 23;
             break;
           }
           message = "".concat(email, " has logged in Successfully!!");
           token = _jsonwebtoken["default"].sign({
-            id: _user.id,
+            id: user.id,
             mail: email,
             msg: message
           }, process.env.ACCESS_TOKEN_SECRET, {
@@ -422,7 +422,7 @@ app.post('/api/users/login', /*#__PURE__*/function () {
           _context9.next = 29;
           break;
         case 23:
-          if (!(_user.pass !== password)) {
+          if (!(user.pass !== password)) {
             _context9.next = 27;
             break;
           }

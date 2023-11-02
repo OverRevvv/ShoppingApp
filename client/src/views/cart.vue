@@ -17,7 +17,7 @@ const getData = async () => {
     console.log(route.path)
     setTimeout(() => {
         inProgress.value = false;
-    }, 500);
+    }, 400);
 }
 
 onBeforeMount(async () => {

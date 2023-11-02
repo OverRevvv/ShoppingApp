@@ -19,7 +19,7 @@ const getData = async () => {
     product.value = results.data;
     setTimeout(() => {
         inProgress.value = false;
-    }, 900);
+    }, 500);
     if (user.isLogged) {
         const cartResults = await axios.get(`/api/users/${user.userID}/cart`, config(user.token));
         cartItems.value = cartResults.data;
@@ -56,6 +56,7 @@ const itemIsInCart = computed(() => {
 <template>
     <div id="page-wrap">
         <div class="skeleton-wrap" v-show="inProgress">
+        <!-- <div class="skeleton-wrap" > -->
             <div class="skeleton-image blur" />
             <div id="product-details">
                 <div class="skeleton-name blur" />
@@ -64,7 +65,6 @@ const itemIsInCart = computed(() => {
                 <div class="skeleton-button blur " />
                 <div class="skeleton-desc blur" />
                 <div v-for="n in 11" :key="n" class="skeleton-para blur" />
-                <div class="skeleton-para-small blur" />
             </div>
         </div>
         <div class="prod-wrap" v-if="!inProgress">
@@ -192,31 +192,11 @@ img {
 }
 
 .skeleton-para {
-    background-color: #64636367;
-    height: 1.2rem;
+    background-color: #6463639d;
+    height: 1rem;
     width: 100%;
     border-radius: 4px;
-    margin: 0.010rem auto;
-}
-
-.skeleton-para-small {
-    background-color: #64636367;
-    height: 1.5rem;
-    width: 50%;
-    border-radius: 4px;
     margin: 0 auto;
-    margin-top: 0.3rem;
+    margin-top: .2rem;
 }
-
-/* 
-VS code themes 
-winter is coming
-pro hacker theme
-palenight theme
-Ayu theme
-Bearded theme
-One dark Pro
-Vibrancy Continued
-
- */
 </style>
